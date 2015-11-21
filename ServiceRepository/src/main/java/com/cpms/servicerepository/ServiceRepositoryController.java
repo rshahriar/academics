@@ -17,14 +17,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-public class BaseController {
+public class ServiceRepositoryController {
 
     @Autowired
     private MachineServicesDAO machineServicesDAO;
 
     private int counter = 0;
     private static final String VIEW_INDEX = "index";
-    private final static org.slf4j.Logger logger = LoggerFactory.getLogger(BaseController.class);
+    private final static org.slf4j.Logger logger = LoggerFactory.getLogger(ServiceRepositoryController.class);
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String welcome(ModelMap model) {
@@ -50,13 +50,13 @@ public class BaseController {
     }
 
     @RequestMapping(value = "/services", method = RequestMethod.GET)
-    public @ResponseBody List<MachineServicesBean> getMachineServicesInJSON() {
+    public @ResponseBody MachineServicesBean getMachineServicesInJSON() {
         List<MachineServices> list = machineServicesDAO.list();
         List<MachineServicesBean> beans = new ArrayList<>();
         for (MachineServices machineServices : list) {
             beans.add(new MachineServicesBean(machineServices));
             logger.debug("[Machine Services Entry] : {}", machineServices.toString());
         }
-        return beans;
+        return beans.get(0);
     }
 }
