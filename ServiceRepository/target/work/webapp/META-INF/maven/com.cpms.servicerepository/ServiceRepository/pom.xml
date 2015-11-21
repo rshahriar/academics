@@ -15,6 +15,7 @@
         <junit.version>4.11</junit.version>
         <logback.version>1.0.13</logback.version>
         <slf4j.version>1.7.5</slf4j.version>
+        <spring-jackson.version>2.5.1</spring-jackson.version>
     </properties>
 
     <dependencies>
@@ -51,6 +52,12 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>${spring-framework.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${spring-jackson.version}</version>
         </dependency>
 
         <!-- Hibernate -->

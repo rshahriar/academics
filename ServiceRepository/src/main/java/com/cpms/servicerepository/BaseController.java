@@ -1,8 +1,8 @@
 package com.cpms.servicerepository;
 
-import com.cpms.servicerepository.bean.PersonBean;
-import com.cpms.servicerepository.dao.PersonDAO;
-import com.cpms.servicerepository.model.Person;
+import com.cpms.servicerepository.bean.MachineServicesBean;
+import com.cpms.servicerepository.dao.MachineServicesDAO;
+import com.cpms.servicerepository.model.MachineServices;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +10,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import java.util.List;
 public class BaseController {
 
     @Autowired
-    private PersonDAO personDAO;
+    private MachineServicesDAO machineServicesDAO;
 
     private int counter = 0;
     private static final String VIEW_INDEX = "index";
@@ -38,14 +39,24 @@ public class BaseController {
 
     @RequestMapping(value = "/{name}", method = RequestMethod.GET)
     public ModelAndView welcomeName(@PathVariable String name, ModelMap model) {
-        List<Person> list = personDAO.list();
-        List<PersonBean> beans = new ArrayList<>();
-        for (Person person : list) {
-            beans.add(new PersonBean(person));
-            logger.debug("[Person] : {}", person.toString());
+        List<MachineServices> list = machineServicesDAO.list();
+        List<MachineServicesBean> beans = new ArrayList<>();
+        for (MachineServices machineServices : list) {
+            beans.add(new MachineServicesBean(machineServices));
+            logger.debug("[Machine Services Entry] : {}", machineServices.toString());
         }
         model.addAttribute("persons", beans);
         return new ModelAndView("test");
     }
 
+    @RequestMapping(value = "/services", method = RequestMethod.GET)
+    public @ResponseBody List<MachineServicesBean> getMachineServicesInJSON() {
+        List<MachineServices> list = machineServicesDAO.list();
+        List<MachineServicesBean> beans = new ArrayList<>();
+        for (MachineServices machineServices : list) {
+            beans.add(new MachineServicesBean(machineServices));
+            logger.debug("[Machine Services Entry] : {}", machineServices.toString());
+        }
+        return beans;
+    }
 }

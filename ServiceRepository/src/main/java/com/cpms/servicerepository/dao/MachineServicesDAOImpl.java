@@ -1,13 +1,16 @@
 package com.cpms.servicerepository.dao;
 
-import java.util.List;
-import com.cpms.servicerepository.model.Person;
+import com.cpms.servicerepository.model.MachineServices;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import java.util.List;
 
-public class PersonDAOImpl implements PersonDAO {
+/**
+ * Created by Rakib on 11/21/2015.
+ */
+public class MachineServicesDAOImpl implements MachineServicesDAO {
 
     private SessionFactory sessionFactory;
 
@@ -16,20 +19,20 @@ public class PersonDAOImpl implements PersonDAO {
     }
 
     @Override
-    public void save(Person p) {
+    public void save(MachineServices machineServices) {
         Session session = this.sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
-        session.persist(p);
+        session.persist(machineServices);
         tx.commit();
         session.close();
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<Person> list() {
+    public List<MachineServices> list() {
         Session session = this.sessionFactory.openSession();
-        List<Person> personList = session.createQuery("from Person").list();
+        List<MachineServices> machineServicesList = session.createQuery("from MachineServices").list();
         session.close();
-        return personList;
+        return machineServicesList;
     }
 }
