@@ -25,6 +25,16 @@ public class MachineServicesBean {
         this.monitorServiceDescription = machineServices.getMonitor_service_description();
     }
 
+    public MachineServicesBean() {
+        this.machineId = 0;
+        this.machineModel = "Test";
+        this.machineDescription = "Test";
+        this.controlServiceUrl = "Test";
+        this.controlServiceDescription = "Test";
+        this.monitorServiceUrl = "Test";
+        this.monitorServiceDescription = "Test";
+    }
+
     public int getMachineId() {
         return machineId;
     }

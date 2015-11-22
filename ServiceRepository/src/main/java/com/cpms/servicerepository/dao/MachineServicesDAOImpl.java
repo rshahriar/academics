@@ -35,4 +35,14 @@ public class MachineServicesDAOImpl implements MachineServicesDAO {
         session.close();
         return machineServicesList;
     }
+
+    @Override
+    public MachineServices getMachineServicesById(int machine_id) {
+        Session session = this.sessionFactory.openSession();
+        List<MachineServices> machineServicesList = session.createQuery("from MachineServices m where m.machine_id = :machine_id")
+                .setParameter("machine_id", machine_id)
+                .list();
+        session.close();
+        return machineServicesList.get(0);
+    }
 }

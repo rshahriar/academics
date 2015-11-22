@@ -10,4 +10,5 @@ import java.util.List;
 public interface MachineServicesDAO {
     void save(MachineServices machineServices);
     List<MachineServices> list();
+    MachineServices getMachineServicesById(int machine_id);
 }
