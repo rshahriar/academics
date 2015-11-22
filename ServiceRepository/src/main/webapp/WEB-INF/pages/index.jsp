@@ -1,21 +1,12 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>   
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
     <title>CPMS Service Repository</title>
-    <script type="text/javascript" src="scripts/jquery-2.1.4.js"></script>
-    <script type="text/javascript">
-        function doAjax(mId) {
-            $.ajax({
-                url: 'details',
-                data: ({machineId : mId}),
-                success: function(data) {
-                    $('#time').html(data);
-                }
-            });
-        }
-    </script>
-
+    <link href="<c:url value='css/bootstrap.css' />" rel="stylesheet"/>
     <style>
         table {
             width:100%;
@@ -42,10 +33,13 @@
 </head>
 <body>
 <div style="width : 50%; float: left;">
-    <p>List of Services</p>
+    <p><b>List of Services</b></p>
 </div>
 <div style="float: right">
-    <p><button value="Add New Service">Add New Service</button></p>
+    <p>
+        <form:form action="register" method="get" commandName="model">
+        <input type="submit" value="Add New Service">
+        </form:form>
 </div>
 
 <table id="t01">
@@ -68,7 +62,14 @@
             <td>${machineServices.controlServiceDescription}</td>
             <td>${machineServices.monitorServiceUrl}</td>
             <td>${machineServices.monitorServiceDescription}</td>
-            <td><button name="update" value="Edit Services">Edit</button></td>
+            <td>
+            <td>
+                <a href="<c:url value='/edit/${machineServices.machineId}' />" class="btn btn-success custom-width">Edit</a>
+            </td>
+                <%--<form:form action="edit" method="get" commandName="machineServices">--%>
+                <%--<input type="submit" value="Edit">--%>
+                <%--</form:form>--%>
+                <%--</td>--%>
         </tr>
     </c:forEach>
 </table>

@@ -22,7 +22,11 @@ public class MachineServicesDAOImpl implements MachineServicesDAO {
     public void save(MachineServices machineServices) {
         Session session = this.sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
-        session.persist(machineServices);
+        if (machineServices.getMachine_id() == 0) {
+            session.persist(machineServices);
+        } else {
+            session.saveOrUpdate(machineServices);
+        }
         tx.commit();
         session.close();
     }

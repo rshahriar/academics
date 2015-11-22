@@ -14,7 +14,7 @@
 </head>
 <body>
 <h3>Successfully added new service</h3>
-<form:form action="indexView" method="get" commandName="model">
+<form:form action="${baseUrl}" method="get" commandName="model">
   <input type="submit" value="Return to Services List">
 </form:form>
 </body>

@@ -11,7 +11,7 @@
     "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title>Add/Update CPMS Services</title>
+    <title>Register Machine Visualization Services</title>
 </head>
 <body>
 
