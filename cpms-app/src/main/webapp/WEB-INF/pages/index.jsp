@@ -3,7 +3,7 @@
 <head>
 
     <%--<link href="css/bootstrap.min.css" rel="stylesheet">--%>
-    <title>CPMS</title>
+    <title>CPMS Dashboard</title>
     <style>
         table {
             width:100%;
