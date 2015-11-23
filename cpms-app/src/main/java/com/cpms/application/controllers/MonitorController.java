@@ -11,10 +11,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.util.HashMap;
 
@@ -45,8 +45,14 @@ public class MonitorController {
             String output = br.readLine();
             logger.debug("JSON response : "+ output);
             HashMap<String, Object> jsonMap = new ObjectMapper().readValue(output, HashMap.class);
+
             model.addAttribute("machineId", jsonMap.get("machineId"));
             model.addAttribute("machineModel", jsonMap.get("machineModel"));
+
+            // FIXME: This maps has to be constructed by calling Service Repository
+            model.addAttribute("monitorServiceUrl", "http://localhost:8082/virtualization/monitoring/ultimaker");
+            model.addAttribute("printServiceUrl", "http://localhost:8082/virtualization/control/ultimaker");
+
             httpClient.getConnectionManager().shutdown();
         } catch (MalformedURLException e) {
             logger.error("BAD URL");
@@ -57,6 +63,4 @@ public class MonitorController {
         }
         return "monitor";
     }
-
-
 }

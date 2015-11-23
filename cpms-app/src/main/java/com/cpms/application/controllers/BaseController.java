@@ -28,7 +28,6 @@ public class BaseController {
         model.addAttribute("servicesUrl", "http://localhost:8081/ServiceRepository/services");
         // Spring uses InternalResourceViewResolver and return back index.jsp
         return VIEW_INDEX;
-
     }
 
     @RequestMapping(value = "/{name}", method = RequestMethod.GET)

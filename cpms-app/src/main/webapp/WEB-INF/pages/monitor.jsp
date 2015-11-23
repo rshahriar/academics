@@ -42,52 +42,37 @@
             //call service for monitoring
             $.getJSON("${monitorServiceUrl}", function(result){
                 bindTable(result);
+                setTimeout(fetchMonitorData, 10000);
             });
         }
 
         function bindTable(response) {
-            $.each(response, function (i, item) {
                 $('<tr>').append(
-                        $('<td>').text(item.timeStamp),
-                        $('<td>').text(item.bedTemperature),
-                        $('<td>').text(item.nozzleTemperature),
-                        $('<td>').append(item.progress)).appendTo('#t01');
-            });
+                        $('<td>').text(response.timeStamp),
+                        $('<td>').text(response.bedTemperature),
+                        $('<td>').text(response.nozzleTemperature),
+                        $('<td>').append(response.progress)).appendTo('#t01');
         }
+
+        $(function () {
+            fetchMonitorData();
+        });
     </script>
 </head>
 <body>
-<div>
-    <div style="width : 30%; float: left">
-        <p>
-            <input type="submit" value="Connect Device">
-        </p>
-    </div>
-    <div style="width: 40%; float: left">
-        <p>
-            <b>Machine Connected</b>
-        </p>
-    </div>
-    <div style="width: 30%; float: right">
-        <p>
-            <input type="submit" value="Disconnect Device">
-        </p>
-    </div>
-</div>
 
 <div align="left" style="width: 100%">
-    <form method="POST" enctype="multipart/form-data" action="/print">
+    <form method="POST" enctype="multipart/form-data" action="${printServiceUrl}">
         Select Model File: <input type="file" name="file">
-        <br />
-        <br />
+        <%--<br />--%>
+        <%--<br />--%>
         <input type="submit" value="Print">
-        <%--<input type="submit" value="Cancel">--%>
     </form>
 </div>
 
-<div>
-    <button onclick="fetchMonitorData()">Fetch Monitoring Information</button>
-</div>
+<%--<div>--%>
+    <%--<button onclick="fetchMonitorData()">Fetch Monitoring Information</button>--%>
+<%--</div>--%>
 
 <div>
     <br />

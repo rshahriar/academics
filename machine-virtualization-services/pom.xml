@@ -30,6 +30,16 @@
       <artifactId>jersey-server</artifactId>
       <version>1.8</version>
     </dependency>
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-json</artifactId>
+      <version>1.8</version>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.jersey.contribs</groupId>
+      <artifactId>jersey-multipart</artifactId>
+      <version>1.8</version>
+    </dependency>
   </dependencies>
   <build>
     <finalName>machine-virtualization-services</finalName>
@@ -43,10 +53,12 @@
           <scanIntervalSeconds>10</scanIntervalSeconds>
           <connectors>
             <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-              <port>8081</port>
+              <port>8082</port>
               <maxIdleTime>60000</maxIdleTime>
             </connector>
           </connectors>
+          <stopKey/>
+          <stopPort/>
         </configuration>
       </plugin>
 

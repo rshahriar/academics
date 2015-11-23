@@ -14,7 +14,7 @@ public class Test {
         // port number of raspberry pi
         int portNumber = Integer.parseInt("12345");
 
-        char[] buf = new char[100];
+        char[] buf = new char[1024];
 
         try {
             Socket clientSocket = new Socket(hostName, portNumber);
@@ -23,12 +23,6 @@ public class Test {
 
             // connect the printer
             outToServer.write("connect".getBytes());
-            inFromServer.read(buf);
-            System.out.println("From Server : " +  new String(buf));
-
-            // get temperature
-            outToServer.write("gettemp".getBytes());
-            buf = new char[100];
             inFromServer.read(buf);
             System.out.println("From Server : " +  new String(buf));
 
