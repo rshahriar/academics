@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,19 +45,21 @@ public class ServiceRepositoryController {
     }
 
     @RequestMapping(value = "/services", method = RequestMethod.GET)
-    public @ResponseBody List<MachineServicesBean> getAllMachineServicesInJSON() {
+    public @ResponseBody List<MachineServicesBean> getAllMachineServicesInJSON(HttpServletResponse response) {
         List<MachineServices> list = machineServicesDAO.list();
         List<MachineServicesBean> beans = new ArrayList<>();
         for (MachineServices machineServices : list) {
             beans.add(new MachineServicesBean(machineServices));
             logger.debug("[Machine Services Entry] : {}", machineServices.toString());
         }
+        response.addHeader("Access-Control-Allow-Origin", "*");
         return beans;
     }
 
     @RequestMapping(value = "/services/{machineId}", method = RequestMethod.GET)
-    public @ResponseBody MachineServicesBean getMachineServicesInJSON(@PathVariable int machineId) {
+    public @ResponseBody MachineServicesBean getMachineServicesInJSON(@PathVariable int machineId, HttpServletResponse response) {
         MachineServices machineServices = machineServicesDAO.getMachineServicesById(machineId);
+        response.addHeader("Access-Control-Allow-Origin", "*");
         return new MachineServicesBean(machineServices);
     }
 }

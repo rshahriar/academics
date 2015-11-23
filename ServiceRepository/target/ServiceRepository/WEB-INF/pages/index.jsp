@@ -63,7 +63,6 @@
             <td>${machineServices.monitorServiceUrl}</td>
             <td>${machineServices.monitorServiceDescription}</td>
             <td>
-            <td>
                 <a href="<c:url value='/edit/${machineServices.machineId}' />" class="btn btn-success custom-width">Edit</a>
             </td>
                 <%--<form:form action="edit" method="get" commandName="machineServices">--%>
