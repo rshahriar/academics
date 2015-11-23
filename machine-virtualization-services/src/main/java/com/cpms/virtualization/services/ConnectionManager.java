@@ -31,9 +31,9 @@ public class ConnectionManager {
         int portNumber = Integer.parseInt("12345");
 
         char[] buf = new char[MIN_SIZE];
-
+        Socket clientSocket = null;
         try {
-            Socket clientSocket = new Socket(hostName, portNumber);
+            clientSocket = new Socket(hostName, portNumber);
             DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
             BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
@@ -56,11 +56,18 @@ public class ConnectionManager {
             buf = new char[MIN_SIZE];
             inFromServer.read(buf);
 
-            clientSocket.close();
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (clientSocket != null) {
+                try {
+                    clientSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return new Monitor(timeStamp, bedTemperature, nozzleTemperature, progress);
     }
@@ -107,7 +114,7 @@ public class ConnectionManager {
     private byte[] getBytes(InputStream is) throws IOException {
 
         int len;
-        int size = 1024;
+        int size = 20000;
         byte[] buf;
 
         if (is instanceof ByteArrayInputStream) {

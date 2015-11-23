@@ -48,10 +48,12 @@ public class MonitorController {
 
             model.addAttribute("machineId", jsonMap.get("machineId"));
             model.addAttribute("machineModel", jsonMap.get("machineModel"));
+            model.addAttribute("controlServiceUrl", jsonMap.get("controlServiceUrl"));
+            model.addAttribute("monitorServiceUrl", jsonMap.get("monitorServiceUrl"));
 
             // FIXME: This maps has to be constructed by calling Service Repository
-            model.addAttribute("monitorServiceUrl", "http://localhost:8082/virtualization/monitoring/ultimaker");
-            model.addAttribute("printServiceUrl", "http://localhost:8082/virtualization/control/ultimaker");
+//            model.addAttribute("monitorServiceUrl", "http://localhost:8082/virtualization/monitoring/ultimaker");
+//            model.addAttribute("printServiceUrl", "http://localhost:8082/virtualization/control/ultimaker");
 
             httpClient.getConnectionManager().shutdown();
         } catch (MalformedURLException e) {

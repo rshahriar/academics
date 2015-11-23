@@ -30,6 +30,7 @@ public class BaseController {
         return VIEW_INDEX;
     }
 
+/*
     @RequestMapping(value = "/{name}", method = RequestMethod.GET)
     public String welcomeName(@PathVariable String name, ModelMap model) {
 
@@ -38,5 +39,6 @@ public class BaseController {
         logger.debug("[welcomeName] counter : {}", counter);
         return VIEW_INDEX;
     }
+*/
 
 }

@@ -20,7 +20,7 @@ public class ControlResource {
     @POST
     @Path("ultimaker")
     @Consumes(value={MediaType.APPLICATION_JSON,MediaType.MULTIPART_FORM_DATA})
-    @Produces(value={MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Produces(value={"text/html"})
     public Response controlMachine(@FormDataParam("file") InputStream uploadedInputStream,
                                    @FormDataParam("file") FormDataContentDisposition fileDetail) {
         String result = new ConnectionManager().printFile(uploadedInputStream);
