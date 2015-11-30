@@ -65,10 +65,6 @@
             <td>
                 <a href="<c:url value='/edit/${machineServices.machineId}' />" class="btn btn-success custom-width">Edit</a>
             </td>
-                <%--<form:form action="edit" method="get" commandName="machineServices">--%>
-                <%--<input type="submit" value="Edit">--%>
-                <%--</form:form>--%>
-                <%--</td>--%>
         </tr>
     </c:forEach>
 </table>

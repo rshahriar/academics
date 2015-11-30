@@ -1,5 +1,6 @@
 package com.cpms.virtualization.services;
 
+import com.cpms.virtualization.models.Characteristics;
 import com.cpms.virtualization.models.Monitor;
 
 import java.io.*;
@@ -17,6 +18,51 @@ public class ConnectionManager {
     private static final int BUF_SIZE = 1024;
     private static final int MIN_SIZE = 1;
 
+    public Characteristics getCharacteristicsData() {
+        Characteristics characteristics = new Characteristics();
+        // host ip of raspberry pi
+        String hostName = "130.184.104.182";
+        // port number of raspberry pi
+        int portNumber = Integer.parseInt("12345");
+
+        Socket clientSocket = null;
+        try {
+            clientSocket = new Socket(hostName, portNumber);
+            DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
+            BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+            // get progress
+            outToServer.write("probe".getBytes());
+            char[] buf;
+            buf = new char[BUF_SIZE];
+            inFromServer.read(buf);
+            String output = new String(buf);
+            StringTokenizer st = new StringTokenizer(output, ",");
+            characteristics.setMachineModelName(st.nextToken());
+            characteristics.setCompany(st.nextToken());
+            characteristics.setMachineType(st.nextToken());
+            characteristics.setMaxWidth(st.nextToken());
+            characteristics.setMaxDepth(st.nextToken());
+            characteristics.setMaxHeight(st.nextToken());
+            characteristics.setBuildAreaShape(st.nextToken());
+            characteristics.setConnectionType(st.nextToken());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (clientSocket != null) {
+                try {
+                    clientSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return characteristics;
+    }
+
     public Monitor getMonitorData() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         String timeStamp = sdf.format(new Date());
@@ -30,17 +76,13 @@ public class ConnectionManager {
         // port number of raspberry pi
         int portNumber = Integer.parseInt("12345");
 
-        char[] buf = new char[MIN_SIZE];
         Socket clientSocket = null;
         try {
             clientSocket = new Socket(hostName, portNumber);
             DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
             BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-            // connect the printer
-            outToServer.write("connect".getBytes());
-            inFromServer.read(buf);
-
+            char[] buf;
             // get progress
             outToServer.write("monitor".getBytes());
             buf = new char[BUF_SIZE];
@@ -50,11 +92,6 @@ public class ConnectionManager {
             progress = st.nextToken();
             nozzleTemperature = st.nextToken();
             bedTemperature = st.nextToken();
-
-            // disconnect machine
-            outToServer.write("disconnect".getBytes());
-            buf = new char[MIN_SIZE];
-            inFromServer.read(buf);
 
         } catch (UnknownHostException e) {
             e.printStackTrace();
@@ -81,17 +118,13 @@ public class ConnectionManager {
         // port number of raspberry pi
         int portNumber = Integer.parseInt("12345");
 
-        char[] buf = new char[MIN_SIZE];
         try {
             byte[] fileBytes = getBytes(inputStream);
             Socket clientSocket = new Socket(hostName, portNumber);
             DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
             BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-            // connect the printer
-            outToServer.write("connect".getBytes());
-            inFromServer.read(buf);
-
+            char[] buf;
             // get progress
             buf = new char[MIN_SIZE];
             outToServer.write("load".getBytes());
@@ -114,7 +147,7 @@ public class ConnectionManager {
     private byte[] getBytes(InputStream is) throws IOException {
 
         int len;
-        int size = 20000;
+        int size = 5079000;
         byte[] buf;
 
         if (is instanceof ByteArrayInputStream) {
@@ -129,5 +162,46 @@ public class ConnectionManager {
             buf = bos.toByteArray();
         }
         return buf;
+    }
+
+    public String getMachineStatus() {
+        String status = "";
+        // host ip of raspberry pi
+        String hostName = "130.184.104.182";
+        // port number of raspberry pi
+        int portNumber = Integer.parseInt("12345");
+
+        Socket clientSocket = null;
+        try {
+            clientSocket = new Socket(hostName, portNumber);
+            DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
+            BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+            char[] buf;
+            // get progress
+            outToServer.write("status".getBytes());
+            buf = new char[1];
+            inFromServer.read(buf);
+            String output = new String(buf);
+            if (Integer.parseInt(output) == 1) {
+                status = "Busy";
+            } else {
+                status = "Available";
+            }
+
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (clientSocket != null) {
+                try {
+                    clientSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return status;
     }
 }

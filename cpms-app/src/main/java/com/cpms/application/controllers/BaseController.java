@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class BaseController {
 
-    private static int counter = 0;
     private static final String VIEW_INDEX = "index";
     private final static org.slf4j.Logger logger = LoggerFactory.getLogger(BaseController.class);
 
@@ -25,7 +24,7 @@ public class BaseController {
     public String welcome(ModelMap model, HttpServletRequest request, HttpServletResponse response) {
 
         model.addAttribute("baseUrl", Utils.getURLWithContextPath(request));
-        model.addAttribute("servicesUrl", "http://localhost:8081/ServiceRepository/services");
+        model.addAttribute("servicesUrl", "http://130.184.104.115:8084/cpms-subscription/machines/subscribed/1");
         // Spring uses InternalResourceViewResolver and return back index.jsp
         return VIEW_INDEX;
     }
