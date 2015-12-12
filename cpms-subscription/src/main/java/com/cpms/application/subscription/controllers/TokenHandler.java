@@ -6,8 +6,6 @@ import com.cpms.application.subscription.model.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.StringEscapeUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -67,7 +65,6 @@ public class TokenHandler {
             boolean validHash = Arrays.equals(createHmac(userBytes), hash);
             if (validHash) {
                 final AuthenticationUser userFromWeb = fromJSON(userBytes);
-                // FIXME: Call and match with database
                 if (subscriptionDAO != null) {
                     User userFromDb = subscriptionDAO.getByEmail(userFromWeb.getUserEmail());
                     if (!userFromWeb.getPassword().equals(userFromDb.getUser_password())) {

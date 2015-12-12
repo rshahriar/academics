@@ -9,6 +9,13 @@ public class Monitor {
     private String nozzleTemperature;
     private String progress;
 
+    public Monitor() {
+        this.timeStamp = "";
+        this.bedTemperature = "";
+        this.nozzleTemperature = "";
+        this.progress = "";
+    }
+
     public Monitor(String timeStamp, String bedTemperature, String nozzleTemperature, String progress) {
         this.timeStamp = timeStamp;
         this.bedTemperature = bedTemperature;

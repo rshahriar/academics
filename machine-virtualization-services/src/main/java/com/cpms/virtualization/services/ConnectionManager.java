@@ -5,7 +5,6 @@ import com.cpms.virtualization.models.Monitor;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.StringTokenizer;
@@ -18,7 +17,7 @@ public class ConnectionManager {
     private static final int BUF_SIZE = 1024;
     private static final int MIN_SIZE = 1;
 
-    public Characteristics getCharacteristicsData() {
+    public Characteristics getCharacteristicsData() throws IOException {
         Characteristics characteristics = new Characteristics();
         // host ip of raspberry pi
         String hostName = "130.184.104.182";
@@ -26,45 +25,33 @@ public class ConnectionManager {
         int portNumber = Integer.parseInt("12345");
 
         Socket clientSocket = null;
-        try {
-            clientSocket = new Socket(hostName, portNumber);
-            DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
-            BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        clientSocket = new Socket(hostName, portNumber);
+        DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
+        BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-            // get progress
-            outToServer.write("probe".getBytes());
-            char[] buf;
-            buf = new char[BUF_SIZE];
-            inFromServer.read(buf);
-            String output = new String(buf);
-            StringTokenizer st = new StringTokenizer(output, ",");
-            characteristics.setMachineModelName(st.nextToken());
-            characteristics.setCompany(st.nextToken());
-            characteristics.setMachineType(st.nextToken());
-            characteristics.setMaterial(st.nextToken());
-            characteristics.setMaxWidth(st.nextToken());
-            characteristics.setMaxDepth(st.nextToken());
-            characteristics.setMaxHeight(st.nextToken());
-            characteristics.setBuildAreaShape(st.nextToken());
-            characteristics.setConnectionType(st.nextToken());
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (clientSocket != null) {
-                try {
-                    clientSocket.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+        // get progress
+        outToServer.write("probe".getBytes());
+        char[] buf;
+        buf = new char[BUF_SIZE];
+        inFromServer.read(buf);
+        String output = new String(buf);
+        StringTokenizer st = new StringTokenizer(output, ",");
+        characteristics.setMachineModelName(st.nextToken());
+        characteristics.setCompany(st.nextToken());
+        characteristics.setMachineType(st.nextToken());
+        characteristics.setMaterial(st.nextToken());
+        characteristics.setMaxWidth(st.nextToken());
+        characteristics.setMaxDepth(st.nextToken());
+        characteristics.setMaxHeight(st.nextToken());
+        characteristics.setBuildAreaShape(st.nextToken());
+        characteristics.setConnectionType(st.nextToken());
+        if (clientSocket != null) {
+            clientSocket.close();
         }
-
         return characteristics;
     }
 
-    public Monitor getMonitorData() {
+    public Monitor getMonitorData() throws IOException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         String timeStamp = sdf.format(new Date());
         String bedTemperature = "";
@@ -78,39 +65,28 @@ public class ConnectionManager {
         int portNumber = Integer.parseInt("12345");
 
         Socket clientSocket = null;
-        try {
-            clientSocket = new Socket(hostName, portNumber);
-            DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
-            BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        clientSocket = new Socket(hostName, portNumber);
+        DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
+        BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-            char[] buf;
-            // get progress
-            outToServer.write("monitor".getBytes());
-            buf = new char[BUF_SIZE];
-            inFromServer.read(buf);
-            String output = new String(buf);
-            StringTokenizer st = new StringTokenizer(output, ",");
-            progress = st.nextToken();
-            nozzleTemperature = st.nextToken();
-            bedTemperature = st.nextToken();
+        char[] buf;
+        // get progress
+        outToServer.write("monitor".getBytes());
+        buf = new char[BUF_SIZE];
+        inFromServer.read(buf);
+        String output = new String(buf);
+        StringTokenizer st = new StringTokenizer(output, ",");
+        progress = st.nextToken();
+        nozzleTemperature = st.nextToken();
+        bedTemperature = st.nextToken();
 
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (clientSocket != null) {
-                try {
-                    clientSocket.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+        if (clientSocket != null) {
+            clientSocket.close();
         }
         return new Monitor(timeStamp, bedTemperature, nozzleTemperature, progress);
     }
 
-    public String printFile(InputStream inputStream) {
+    public String printFile(InputStream inputStream) throws IOException {
 
         String resultMessage = "Success";
 
@@ -119,29 +95,25 @@ public class ConnectionManager {
         // port number of raspberry pi
         int portNumber = Integer.parseInt("12345");
 
-        try {
-            byte[] fileBytes = getBytes(inputStream);
-            Socket clientSocket = new Socket(hostName, portNumber);
-            DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
-            BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        byte[] fileBytes = getBytes(inputStream);
+        Socket clientSocket = new Socket(hostName, portNumber);
+        DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
+        BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-            char[] buf;
-            // get progress
-            buf = new char[MIN_SIZE];
-            outToServer.write("load".getBytes());
-            inFromServer.read(buf);
-            if (new String(buf).equals("1")) {
-                outToServer.write(fileBytes);
-                String output = new String(buf);
-                StringTokenizer st = new StringTokenizer(output, ",");
-            } else {
-                resultMessage = "Failure";
-            }
-            clientSocket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        char[] buf;
+        // get progress
+        buf = new char[MIN_SIZE];
+        outToServer.write("load".getBytes());
+        inFromServer.read(buf);
+        if (new String(buf).equals("1")) {
+            outToServer.write(fileBytes);
+            String output = new String(buf);
+            StringTokenizer st = new StringTokenizer(output, ",");
+        } else {
             resultMessage = "Failure";
         }
+        clientSocket.close();
+//            resultMessage = "Failure";
         return resultMessage;
     }
 
@@ -165,7 +137,7 @@ public class ConnectionManager {
         return buf;
     }
 
-    public String getMachineStatus() {
+    public String getMachineStatus() throws IOException {
         String status = "";
         // host ip of raspberry pi
         String hostName = "130.184.104.182";
@@ -173,35 +145,24 @@ public class ConnectionManager {
         int portNumber = Integer.parseInt("12345");
 
         Socket clientSocket = null;
-        try {
-            clientSocket = new Socket(hostName, portNumber);
-            DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
-            BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        clientSocket = new Socket(hostName, portNumber);
+        DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
+        BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-            char[] buf;
-            // get progress
-            outToServer.write("status".getBytes());
-            buf = new char[1];
-            inFromServer.read(buf);
-            String output = new String(buf);
-            if (Integer.parseInt(output) == 1) {
-                status = "Busy";
-            } else {
-                status = "Available";
-            }
+        char[] buf;
+        // get progress
+        outToServer.write("status".getBytes());
+        buf = new char[1];
+        inFromServer.read(buf);
+        String output = new String(buf);
+        if (Integer.parseInt(output) == 1) {
+            status = "Busy";
+        } else {
+            status = "Available";
+        }
 
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (clientSocket != null) {
-                try {
-                    clientSocket.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+        if (clientSocket != null) {
+            clientSocket.close();
         }
         return status;
     }

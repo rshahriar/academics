@@ -47,11 +47,13 @@
     </style>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css"/>">
+
+    <script src="<c:url value="/resources/js/jquery.min.js"/>"></script>
+    <script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
+    <script src="<c:url value="/resources/js/jquery-2.1.4.js"/>"></script>
+
     <script>
         function fetchCharacteristicsData() {
             //call service for characteristics
@@ -171,12 +173,12 @@
 <div class="container" align="left" style="width: 100%">
     <form role="form" method="POST" enctype="multipart/form-data" action="${controlServiceUrl}">
         <%--<fieldset>--%>
-            <legend>Control Panel:</legend>
-            <div class="form-group">
-                <label for="fileInput">Select Model File</label>
-                <input id="fileInput" type="file" name="file">
-            </div>
-            <input type="submit" value="Print" class="btn btn-default">
+        <legend>Control Panel:</legend>
+        <div class="form-group">
+            <label for="fileInput">Select Model File</label>
+            <input id="fileInput" type="file" name="file">
+        </div>
+        <input type="submit" value="Print" class="btn btn-default">
         <%--</fieldset>--%>
     </form>
 </div>

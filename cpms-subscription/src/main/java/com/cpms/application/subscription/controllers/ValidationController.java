@@ -3,14 +3,12 @@ package com.cpms.application.subscription.controllers;
 import com.cpms.application.subscription.dao.AbstractDAO;
 import com.cpms.application.subscription.model.User;
 import com.google.common.base.Strings;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,6 +40,7 @@ public class ValidationController {
             tokenHandler.parseUserFromToken(token);
             logger.debug("Valid token: {}", token);
         } catch (IOException e) {
+            logger.error("Token validation failed: {}", e);
             return new ResponseEntity<>("Invalid Token", HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>("Success", HttpStatus.OK);

@@ -40,6 +40,21 @@
       <artifactId>jersey-multipart</artifactId>
       <version>1.8</version>
     </dependency>
+    <dependency>
+      <groupId>com.cpms.virtualization</groupId>
+      <artifactId>machine-web-services</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava-collections</artifactId>
+      <version>r03</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.1.1</version>
+    </dependency>
   </dependencies>
   <build>
     <finalName>machine-virtualization-services</finalName>
