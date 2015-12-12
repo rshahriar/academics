@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -33,45 +34,155 @@
             background-color: black;
             color: white;
         }
+        table#t02 tr:nth-child(even) {
+            background-color: #eee;
+        }
+        table#t02 tr:nth-child(odd) {
+            background-color:#fff;
+        }
+        table#t02 th	{
+            background-color: black;
+            color: white;
+        }
     </style>
 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script>
-        function fetchMonitorData() {
-            //call service for monitoring
-            $.getJSON("${monitorServiceUrl}", function(result){
-                bindTable(result);
-                setTimeout(fetchMonitorData, 10000);
+        function fetchCharacteristicsData() {
+            //call service for characteristics
+            $.getJSON("${characteristicsServiceUrl}", function(result){
+                bindCharacteristicsTable(result);
             });
         }
 
-        function bindTable(response) {
-                $('<tr>').append(
-                        $('<td>').text(response.timeStamp),
-                        $('<td>').text(response.bedTemperature),
-                        $('<td>').text(response.nozzleTemperature),
-                        $('<td>').append(response.progress)).appendTo('#t01');
+        function fetchStatusData() {
+            //call service for status
+            $.getJSON("${statusServiceUrl}", function(result){
+                bindStatusImage(result);
+                setTimeout(fetchMonitorData, 60000);
+            });
+        }
+
+        function fetchMonitorData() {
+            //call service for monitoring
+            $.getJSON("${monitorServiceUrl}", function(result){
+                bindMonitorTable(result);
+                setTimeout(fetchMonitorData, 20000);
+            });
+        }
+
+        function bindCharacteristicsTable(response) {
+            $('<tr>').append(
+                    $('<td>').text("Machine Model Name"),
+                    $('<td>').text(response.machineModelName))
+                    .appendTo('#t02');
+            $('<tr>').append(
+                    $('<td>').text("Company"),
+                    $('<td>').text(response.company))
+                    .appendTo('#t02');
+            $('<tr>').append(
+                    $('<td>').text("Machine Type"),
+                    $('<td>').text(response.machineType))
+                    .appendTo('#t02');
+            $('<tr>').append(
+                    $('<td>').text("Material"),
+                    $('<td>').text(response.material))
+                    .appendTo('#t02');
+            $('<tr>').append(
+                    $('<td>').text("Maximum Width"),
+                    $('<td>').text(response.maxWidth))
+                    .appendTo('#t02');
+            $('<tr>').append(
+                    $('<td>').text("Maximum Depth"),
+                    $('<td>').text(response.maxDepth))
+                    .appendTo('#t02');
+            $('<tr>').append(
+                    $('<td>').text("Maximum Height"),
+                    $('<td>').text(response.maxHeight))
+                    .appendTo('#t02');
+            $('<tr>').append(
+                    $('<td>').text("Build Area Shape"),
+                    $('<td>').text(response.buildAreaShape))
+                    .appendTo('#t02');
+            $('<tr>').append(
+                    $('<td>').text("Connection Type"),
+                    $('<td>').text(response.connectionType))
+                    .appendTo('#t02');
+        }
+
+        function bindStatusImage(response) {
+            var status = response;
+            if (status == 'Available') {
+                $('img1').attr('src', '<c:url value="/resources/images/Free.png" />');
+            } else {
+                $('img1').attr('src', '<c:url value="/resources/images/Busy.png" />');
+            }
+        }
+
+        function bindMonitorTable(response) {
+            $('<tr>').append(
+                    $('<td>').text(response.timeStamp),
+                    $('<td>').text(response.bedTemperature),
+                    $('<td>').text(response.nozzleTemperature),
+                    $('<td>').append(response.progress)).appendTo('#t01');
         }
 
         $(function () {
+            fetchCharacteristicsData();
+            fetchStatusData();
             fetchMonitorData();
         });
     </script>
 </head>
 <body>
 
-<div align="left" style="width: 100%">
-    <form method="POST" enctype="multipart/form-data" action="${controlServiceUrl}">
-        Select Model File: <input type="file" name="file">
-        <%--<br />--%>
-        <%--<br />--%>
-        <input type="submit" value="Print">
+<h3>Machine Id: ${machineId}</h3>
+<h3>Machine Model: ${machineModel}</h3>
+
+<br/>
+
+<div>
+    <br />
+    <table id="t02">
+        <tr>
+            <th width="50%">Characteristics</th>
+            <th width="50%">Data</th>
+        </tr>
+    </table>
+</div>
+<br/>
+
+<div>
+    <table>
+        <tr>
+            <td width="50%">Machine Free Busy Information</td>
+            <td width="50%"><img src="<c:url value="/resources/images/Free.png" />" id="img1"></td>
+        </tr>
+    </table>
+</div>
+
+<br />
+
+<div class="container" align="left" style="width: 100%">
+    <form role="form" method="POST" enctype="multipart/form-data" action="${controlServiceUrl}">
+        <%--<fieldset>--%>
+            <legend>Control Panel:</legend>
+            <div class="form-group">
+                <label for="fileInput">Select Model File</label>
+                <input id="fileInput" type="file" name="file">
+            </div>
+            <input type="submit" value="Print" class="btn btn-default">
+        <%--</fieldset>--%>
     </form>
 </div>
 
 <%--<div>--%>
-    <%--<button onclick="fetchMonitorData()">Fetch Monitoring Information</button>--%>
+<%--<button onclick="fetchMonitorData()">Fetch Monitoring Information</button>--%>
 <%--</div>--%>
 
 <div>

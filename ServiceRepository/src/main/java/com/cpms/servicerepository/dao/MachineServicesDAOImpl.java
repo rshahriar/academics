@@ -47,6 +47,10 @@ public class MachineServicesDAOImpl implements MachineServicesDAO {
                 .setParameter("machine_id", machine_id)
                 .list();
         session.close();
-        return machineServicesList.get(0);
+        if (machineServicesList.size() >= 1) {
+            return machineServicesList.get(0);
+        } else {
+            return null;
+        }
     }
 }

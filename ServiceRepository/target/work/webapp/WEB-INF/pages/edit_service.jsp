@@ -12,30 +12,42 @@
 <html>
 <head>
   <title>Edit Machine Virtualization Information</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div align="center">
-  <form:form action="" method="post" commandName="machineServices">
-    Machine model name:<br>
-    <form:input path="machineModel" />
-    <br>
-    Machine Description:<br>
-    <form:input path="machineDescription" />
-    <br>
-    Control Service URL:<br>
-    <form:input path="controlServiceUrl" />
-    <br>
-    Control Service Description:<br>
-    <form:input path="controlServiceDescription" />
-    <br>
-    Monitor Service URL:<br>
-    <form:input path="monitorServiceUrl" />
-    <br>
-    Monitor Service Description:<br>
-    <form:input path="monitorServiceDescription" />
-    <br><br>
-    <input type="submit" value="Save">
+<div class="container">
+  <form:form role="form" action="register" method="post" commandName="machineServices">
+    <div class="form-group">
+      <label for="machineModel">Machine model name</label>
+      <form:input id="machineModel" class="form-control" path="machineModel" />
+    </div>
+    <div class="form-group">
+      <label for="machineDescription">Machine Description</label>
+      <form:input id="machineDescription" class="form-control" path="machineDescription" />
+    </div>
+    <div class="form-group">
+      <label for="controlServiceUrl">Control Service URL</label>
+      <form:input id="controlServiceUrl" class="form-control" path="controlServiceUrl" />
+    </div>
+    <div class="form-group">
+      <label for="controlServiceDescription">Control Service Description</label>
+      <form:input id="controlServiceDescription" class="form-control" path="controlServiceDescription" />
+    </div>
+    <div class="form-group">
+      <label for="monitorServiceUrl">Monitor Service URL</label>
+      <form:input id="monitorServiceUrl" class="form-control" path="monitorServiceUrl" />
+    </div>
+    <div class="form-group">
+      <label for="monitorServiceDescription">Monitor Service Description</label>
+      <form:input id="monitorServiceDescription" class="form-control" path="monitorServiceDescription" />
+    </div>
+    <input type="submit" class="btn btn-default" value="Publish">
   </form:form>
 </div>
+
 </body>
 </html>

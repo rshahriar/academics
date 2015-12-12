@@ -15,7 +15,7 @@ public class UserBean {
     private String firstName;
     private String lastName;
     private String country;
-    private boolean isAdmin;
+    private Integer userRole;
     private List<SubscribedMachineBean> subscribedMachineList = new ArrayList<>();
 
     public UserBean() {
@@ -23,7 +23,7 @@ public class UserBean {
         this.firstName = "A";
         this.lastName = "B";
         this.country = "Bangladesh";
-        this.isAdmin = false;
+        this.userRole = 0;
     }
 
     public UserBean(User user) {
@@ -31,7 +31,7 @@ public class UserBean {
         this.firstName = user.getFirst_name();
         this.lastName = user.getLast_name();
         this.country = user.getCountry();
-        this.isAdmin = user.getAdmin_role() == 1;
+        this.userRole = user.getAdmin_role();
         for (SubscribedMachine subscribedMachine : user.getSubscribedMachines()){
             SubscribedMachineBean subscribedMachineBean = new SubscribedMachineBean(subscribedMachine);
             subscribedMachineList.add(subscribedMachineBean);
@@ -70,12 +70,12 @@ public class UserBean {
         this.country = country;
     }
 
-    public boolean isAdmin() {
-        return isAdmin;
+    public Integer getUserRole() {
+        return userRole;
     }
 
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
+    public void setUserRole(Integer userRole) {
+        this.userRole = userRole;
     }
 
     public List<SubscribedMachineBean> getSubscribedMachineList() {

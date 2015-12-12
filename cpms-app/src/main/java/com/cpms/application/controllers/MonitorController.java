@@ -29,7 +29,7 @@ public class MonitorController {
 
     @RequestMapping(value = "/{machineId}", method = RequestMethod.GET)
     public String getMonitorView(@PathVariable String machineId, ModelMap model) {
-        String url = "http://localhost:8081/ServiceRepository/services/" + machineId;
+        String url = "http://130.184.104.115:8081/ServiceRepository/services/" + machineId;
         try {
             DefaultHttpClient httpClient = new DefaultHttpClient();
             HttpGet request = new HttpGet(url);
@@ -50,10 +50,8 @@ public class MonitorController {
             model.addAttribute("machineModel", jsonMap.get("machineModel"));
             model.addAttribute("controlServiceUrl", jsonMap.get("controlServiceUrl"));
             model.addAttribute("monitorServiceUrl", jsonMap.get("monitorServiceUrl"));
-
-            // FIXME: This maps has to be constructed by calling Service Repository
-//            model.addAttribute("monitorServiceUrl", "http://localhost:8082/virtualization/monitoring/ultimaker");
-//            model.addAttribute("printServiceUrl", "http://localhost:8082/virtualization/control/ultimaker");
+            model.addAttribute("statusServiceUrl", jsonMap.get("statusServiceUrl"));
+            model.addAttribute("characteristicsServiceUrl", jsonMap.get("characteristicsServiceUrl"));
 
             httpClient.getConnectionManager().shutdown();
         } catch (MalformedURLException e) {

@@ -41,6 +41,7 @@ public class ConnectionManager {
             characteristics.setMachineModelName(st.nextToken());
             characteristics.setCompany(st.nextToken());
             characteristics.setMachineType(st.nextToken());
+            characteristics.setMaterial(st.nextToken());
             characteristics.setMaxWidth(st.nextToken());
             characteristics.setMaxDepth(st.nextToken());
             characteristics.setMaxHeight(st.nextToken());

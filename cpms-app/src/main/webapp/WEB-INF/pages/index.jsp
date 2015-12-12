@@ -1,30 +1,45 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>   
-
-<!DOCTYPE html>
+<%--
+  Created by IntelliJ IDEA.
+  User: Rakib
+  Date: 12/10/2015
+  Time: 10:01 PM
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-	<title>CPMSs Subscriber Login</title>
-	<link href="<c:url value="/resources/css/normalize.css" />" rel="stylesheet">
-	<link href="<c:url value="/resources/css/style.css" />" rel="stylesheet">
+    <title>CPMS Web Application</title>
+
+    <script src="<c:url value="/resources/js/jquery-2.1.4.js"/>"></script>
+
+    <script>
+
+        function getCookie(cname) {
+            var name = cname + "=";
+            var ca = document.cookie.split(';');
+            for(var i=0; i<ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0)==' ') c = c.substring(1);
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        $(function () {
+            var userEmail=getCookie("cpmsUserEmail");
+            var userToken=getCookie("cpmsLoginToken");
+            if (userEmail != "" && userToken != "") {
+                window.location.replace("${dashboardViewUrl}");
+            } else {
+                window.location.replace("${loginViewUrl}");
+            }
+        });
+    </script>
 </head>
 <body>
-	<section class="loginform cf">
-        <form:form action="" method="post" commandName="userAuth">
-            <ul>
-                <li>
-                    <label for="usermail">Email</label>
-                    <form:input  path="user_email" type="email" name="usermail" placeholder="yourname@email.com" />
-                </li>
-                <li>
-                    <label for="password">Password</label>
-                    <form:input path="user_credential" type="password" name="password" placeholder="password" />
-                </li>
-                <li>
-                    <input type="submit" value="Login">
-                </li>
-            </ul>
-        </form:form>
-    </section>
+
 </body>
 </html>

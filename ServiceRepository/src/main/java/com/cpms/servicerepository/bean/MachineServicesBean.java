@@ -15,6 +15,10 @@ public class MachineServicesBean {
     private String monitorServiceUrl;
     private String monitorServiceDescription;
 
+    // FIXME: Change database structure for having  multiple number of services for single machine on single purpose
+    private String statusServiceUrl = "http://130.184.104.115:8082/virtualization/status/ultimaker";
+    private String characteristicsServiceUrl = "http://130.184.104.115:8082/virtualization/characteristics/ultimaker";
+
     public MachineServicesBean(MachineServices machineServices) {
         this.machineId = machineServices.getMachine_id();
         this.machineModel = machineServices.getMachine_model();
@@ -89,5 +93,21 @@ public class MachineServicesBean {
 
     public void setMonitorServiceDescription(String monitorServiceDescription) {
         this.monitorServiceDescription = monitorServiceDescription;
+    }
+
+    public String getStatusServiceUrl() {
+        return statusServiceUrl;
+    }
+
+    public void setStatusServiceUrl(String statusServiceUrl) {
+        this.statusServiceUrl = statusServiceUrl;
+    }
+
+    public String getCharacteristicsServiceUrl() {
+        return characteristicsServiceUrl;
+    }
+
+    public void setCharacteristicsServiceUrl(String characteristicsServiceUrl) {
+        this.characteristicsServiceUrl = characteristicsServiceUrl;
     }
 }

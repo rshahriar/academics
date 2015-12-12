@@ -30,10 +30,9 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="<c:url value="/resources/js/jquery.min.js"/>"></script>
+        <script src="<c:url value="/resources/js/jquery-2.1.4.js"/>"></script>
+        <script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
     <script>
         function bindTable(response) {
             var list = response.subscribedMachineList;
@@ -41,7 +40,6 @@
                 $('<tr>').append(
                         $('<td>').text(item.machineId),
                         $('<td>').text(item.remarks),
-//                        $('<td>').text(item.machineDescription),
                         $('<td>').append(
                                 $('<a>').attr('href', "<c:url value='/monitor/" + item.machineId + "' />")
                                         .attr('class', "btn btn-success custom-width").text("Visit Machine")
@@ -49,9 +47,55 @@
             });
         }
 
+        function getCookie(cname) {
+            var name = cname + "=";
+            var ca = document.cookie.split(';');
+            for(var i=0; i<ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0)==' ') c = c.substring(1);
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        function setCookie(cname,cvalue,exdays) {
+            var d = new Date();
+            d.setTime(d.getTime() + (exdays*24*60*60*1000));
+            var expires = "expires=" + d.toGMTString();
+            document.cookie = cname+"="+cvalue+"; "+expires;
+        }
+
+        function logout() {
+            setCookie("cpmsUserEmail", "", 30);
+            setCookie("cpmsLoginToken", "", 30);
+            setCookie("cpmsUserRole", "", 30);
+            window.location.replace("${loginViewUrl}");
+        }
+
+        function checkAuthToken() {
+            var userEmail=getCookie("cpmsUserEmail");
+            var userToken=getCookie("cpmsLoginToken");
+            var userRole=getCookie("cpmsUserRole");
+            if (userEmail == "" || userToken == "" || userRole == "") {
+                window.location.replace("${loginViewUrl}");
+            }
+        }
+
+        function validateToken() {
+            var userToken=getCookie("cpmsLoginToken");
+            $.post("http://130.184.104.115:8084/cpms-subscription/validate",
+                    {"token": userToken},
+                    function(data, status){
+                        alert("Data: " + data + "\nStatus: " + status);
+                    });
+        }
+
         $(function () {
-            console.log(${userBean.email});
-            $.getJSON("${servicesUrl}", function(result){
+            checkAuthToken();
+            var userEmail=getCookie("cpmsUserEmail");
+            $.getJSON("${machineListUrl}" + "?email=" + userEmail, function(result){
                 bindTable(result);
             });
         });
@@ -59,10 +103,26 @@
 </head>
 
 <body>
+<br/>
 <div>
-    <a href="${subscriptionViewUrl}">Subscribe a machine</a>
+    <button class="btn btn-danger custom-width" style="float: right" onclick="validateToken()">Check Token</button>
+    <button class="btn btn-warning custom-width" style="float: right" onclick="logout()">Logout</button>
 </div>
-<br/><br/>
+<br/>
+
+<c:choose>
+    <c:when test="${authenticatedUserBean.userRole=='1'}">
+        <div>
+            <a href="${registerMachineViewUrl}" class="btn btn-success custom-width">Publish a machine</a>
+        </div>
+    </c:when>
+    <c:otherwise>
+        <div>
+            <a href="${subscriptionViewUrl}" class="btn btn-success custom-width">Subscribe a machine</a>
+        </div>
+    </c:otherwise>
+</c:choose>
+
 <h3>List of accessible Cyber Physical Manufacturing Machines</h3>
 
 <table id="t01">
