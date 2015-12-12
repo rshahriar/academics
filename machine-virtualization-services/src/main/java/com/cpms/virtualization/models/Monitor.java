@@ -10,10 +10,10 @@ public class Monitor {
     private String progress;
 
     public Monitor() {
-        this.timeStamp = "";
-        this.bedTemperature = "";
-        this.nozzleTemperature = "";
-        this.progress = "";
+        this.timeStamp = "0";
+        this.bedTemperature = "0";
+        this.nozzleTemperature = "0";
+        this.progress = "0";
     }
 
     public Monitor(String timeStamp, String bedTemperature, String nozzleTemperature, String progress) {
