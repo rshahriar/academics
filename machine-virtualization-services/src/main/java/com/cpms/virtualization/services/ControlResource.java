@@ -30,7 +30,8 @@ public class ControlResource {
             result = new ConnectionManager().printFile(uploadedInputStream);
             return Response.ok().entity(result).build();
         } catch (IOException e) {
-            return Response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR).entity(result).build();
+            return Response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR)/*.header("Access-Control-Allow-Origin", "*")*/
+                    .entity(result).build();
         }
     }
 }

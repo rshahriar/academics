@@ -25,7 +25,8 @@ public class MonitoringResource {
             monitor = new ConnectionManager().getMonitorData();
             return Response.ok().entity(monitor).build();
         } catch (IOException e) {
-            return Response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR).entity(monitor).build();
+            return Response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR)/*.header("Access-Control-Allow-Origin", "*")*/
+                    .entity(monitor).build();
         }
     }
 }

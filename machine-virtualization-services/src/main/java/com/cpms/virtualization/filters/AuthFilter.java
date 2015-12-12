@@ -36,10 +36,15 @@ public class AuthFilter implements ContainerRequestFilter {
     public ContainerRequest filter(ContainerRequest containerRequest)
             throws WebApplicationException {
 
+        if(containerRequest.getMethod().equals("OPTIONS")) {
+            return containerRequest;
+        }
+
         // Get the authentication passed in HTTP headers parameters
         String authToken = containerRequest.getHeaderValue("Authorization");
-        if (Strings.isNullOrEmpty(authToken))
+        if (Strings.isNullOrEmpty(authToken)) {
             throw unauthorized;
+        }
 
         HttpClient client = new DefaultHttpClient();
         HttpConnectionParams.setConnectionTimeout(client.getParams(), 5000);

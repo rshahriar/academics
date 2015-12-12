@@ -26,7 +26,8 @@ public class MachineStatusResource {
             return Response.ok().entity(status).build();
         } catch (IOException e) {
             status = "Machine Not Available";
-            return Response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR).entity(status).build();
+            return Response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR)/*.header("Access-Control-Allow-Origin", "*")*/
+                    .entity(status).build();
         }
     }
 }

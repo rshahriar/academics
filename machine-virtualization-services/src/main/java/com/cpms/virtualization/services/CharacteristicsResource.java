@@ -27,7 +27,8 @@ public class CharacteristicsResource {
             characteristics = new ConnectionManager().getCharacteristicsData();
             return Response.ok().entity(characteristics).build();
         } catch (IOException e) {
-            return Response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR).entity(characteristics).build();
+            return Response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR)/*.header("Access-Control-Allow-Origin", "*")*/
+                    .entity(characteristics).build();
         }
     }
 

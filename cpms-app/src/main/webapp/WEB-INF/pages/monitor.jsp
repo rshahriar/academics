@@ -57,25 +57,65 @@
     <script>
         function fetchCharacteristicsData() {
             //call service for characteristics
-            $.getJSON("${characteristicsServiceUrl}", function(result){
-                bindCharacteristicsTable(result);
+            var userToken=getCookie("cpmsLoginToken");
+
+            $.ajax({
+                url: "${characteristicsServiceUrl}",
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Authorization', userToken);
+                },
+                method: "GET",
+//                dataType: "json",
+                success:function(result){
+                    bindCharacteristicsTable(result);
+                }
             });
         }
 
         function fetchStatusData() {
             //call service for status
-            $.getJSON("${statusServiceUrl}", function(result){
-                bindStatusImage(result);
-                setTimeout(fetchMonitorData, 60000);
+            var userToken=getCookie("cpmsLoginToken");
+            $.ajax({
+                url: "${statusServiceUrl}",
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Authorization', userToken);
+                },
+                method: "GET",
+                success:function(result){
+                    bindStatusImage(result);
+                    setTimeout(fetchMonitorData, 60000);
+                }
             });
         }
 
         function fetchMonitorData() {
             //call service for monitoring
-            $.getJSON("${monitorServiceUrl}", function(result){
-                bindMonitorTable(result);
-                setTimeout(fetchMonitorData, 20000);
+            var userToken=getCookie("cpmsLoginToken");
+            $.ajax({
+                url: "${monitorServiceUrl}",
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Authorization', userToken);
+                },
+                method: "GET",
+//                dataType: "json",
+                success:function(result){
+                    bindMonitorTable(result);
+                    setTimeout(fetchMonitorData, 20000);
+                }
             });
+        }
+
+        function getCookie(cname) {
+            var name = cname + "=";
+            var ca = document.cookie.split(';');
+            for(var i=0; i<ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0)==' ') c = c.substring(1);
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
         }
 
         function bindCharacteristicsTable(response) {
@@ -131,7 +171,7 @@
                     $('<td>').text(response.timeStamp),
                     $('<td>').text(response.bedTemperature),
                     $('<td>').text(response.nozzleTemperature),
-                    $('<td>').append(response.progress)).appendTo('#t01');
+                    $('<td>').append(response.progress)).replaceWith("tr#valueRow");
         }
 
         $(function () {
@@ -195,6 +235,12 @@
             <th>Bed Temperature</th>
             <th>Nozzle Temperature</th>
             <th>Progress</th>
+        </tr>
+        <tr id="valueRow">
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
         </tr>
     </table>
 </div>
