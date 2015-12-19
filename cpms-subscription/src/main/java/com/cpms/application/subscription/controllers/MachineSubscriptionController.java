@@ -30,9 +30,6 @@ public class MachineSubscriptionController {
     private final static Logger logger = LoggerFactory.getLogger(MachineSubscriptionController.class);
 
     @Autowired
-    private AbstractDAO<User> subscriptionDAO;
-
-    @Autowired
     AbstractDAO<User> userDAO;
 
     @RequestMapping(value = "/subscribed", method = RequestMethod.GET)
@@ -53,7 +50,7 @@ public class MachineSubscriptionController {
             return new ResponseEntity<>("Bad Token", HttpStatus.BAD_REQUEST);
         }
         try {
-            TokenHandler tokenHandler = new TokenHandler(subscriptionDAO);
+            TokenHandler tokenHandler = new TokenHandler(userDAO);
             tokenHandler.parseUserFromToken(userToken);
 
             SubscribedMachineBean machineEntry = new SubscribedMachineBean(userEmail, machineId, remark);
@@ -67,9 +64,9 @@ public class MachineSubscriptionController {
         } catch (IOException e) {
             logger.error("Token validation failed: {}", e);
             return new ResponseEntity<>("Invalid Token or Server Error", HttpStatus.UNAUTHORIZED);
-        } catch (DataAccessException e) {
+        } catch (RuntimeException e) {
             logger.error("Database Error: {}", e);
-            return new ResponseEntity<>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Server Error, cannot subscribe the machine", HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>("Success", HttpStatus.OK);
     }

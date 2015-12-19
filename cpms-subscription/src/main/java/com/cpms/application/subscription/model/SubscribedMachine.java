@@ -7,7 +7,10 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table(name = "tbl_cpms_subscribed_machines")
+@Table(name = "tbl_cpms_subscribed_machines",
+        uniqueConstraints=
+        @UniqueConstraint(columnNames={"user_id", "machine_id"})
+)
 public class SubscribedMachine {
 
     @Id
