@@ -44,6 +44,7 @@ public class TokenHandler {
             e.printStackTrace();
         }
     }
+
     public String createTokenForUser(AuthenticationUser user) throws JsonProcessingException {
         byte[] userBytes = toJSON(user);
         byte[] hash = createHmac(userBytes);

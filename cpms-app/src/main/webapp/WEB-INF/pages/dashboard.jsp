@@ -106,7 +106,7 @@
 <body>
 <br/>
 <div>
-    <button class="btn btn-danger custom-width" style="float: right" onclick="validateToken()">Check Token</button>
+    <%--<button class="btn btn-danger custom-width" style="float: right" onclick="validateToken()">Check Token</button>--%>
     <button class="btn btn-warning custom-width" style="float: right" onclick="logout()">Logout</button>
 </div>
 <br/>
@@ -114,12 +114,12 @@
 <c:choose>
     <c:when test="${authenticatedUserBean.userRole=='1'}">
         <div>
-            <a href="${registerMachineViewUrl}" class="btn btn-success custom-width">Publish a machine</a>
+            <a href="${registerMachineViewUrl}" class="btn btn-success custom-width">Manage Machines</a>
         </div>
     </c:when>
     <c:otherwise>
         <div>
-            <a href="${subscriptionViewUrl}" class="btn btn-success custom-width">Subscribe a machine</a>
+            <a href="${subscribableListViewUrl}" class="btn btn-success custom-width">Subscribe a machine</a>
         </div>
     </c:otherwise>
 </c:choose>

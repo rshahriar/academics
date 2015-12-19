@@ -65,8 +65,11 @@
                     xhr.setRequestHeader('Authorization', userToken);
                 },
                 method: "GET",
-//                dataType: "json",
+                dataType: "json",
                 success:function(result){
+                    bindCharacteristicsTable(result);
+                },
+                error:function(result){
                     bindCharacteristicsTable(result);
                 }
             });
@@ -84,6 +87,10 @@
                 success:function(result){
                     bindStatusImage(result);
                     setTimeout(fetchMonitorData, 60000);
+                },
+                error:function(result){
+                    bindStatusImage(result);
+                    setTimeout(fetchMonitorData, 60000);
                 }
             });
         }
@@ -97,8 +104,12 @@
                     xhr.setRequestHeader('Authorization', userToken);
                 },
                 method: "GET",
-//                dataType: "json",
+                dataType: "json",
                 success:function(result){
+                    bindMonitorTable(result);
+                    setTimeout(fetchMonitorData, 20000);
+                },
+                error:function(result){
                     bindMonitorTable(result);
                     setTimeout(fetchMonitorData, 20000);
                 }
@@ -121,39 +132,39 @@
         function bindCharacteristicsTable(response) {
             $('<tr>').append(
                     $('<td>').text("Machine Model Name"),
-                    $('<td>').text(response.machineModelName))
+                    $('<td>').text(response.responseJSON.machineModelName))
                     .appendTo('#t02');
             $('<tr>').append(
                     $('<td>').text("Company"),
-                    $('<td>').text(response.company))
+                    $('<td>').text(response.responseJSON.company))
                     .appendTo('#t02');
             $('<tr>').append(
                     $('<td>').text("Machine Type"),
-                    $('<td>').text(response.machineType))
+                    $('<td>').text(response.responseJSON.machineType))
                     .appendTo('#t02');
             $('<tr>').append(
                     $('<td>').text("Material"),
-                    $('<td>').text(response.material))
+                    $('<td>').text(response.responseJSON.material))
                     .appendTo('#t02');
             $('<tr>').append(
                     $('<td>').text("Maximum Width"),
-                    $('<td>').text(response.maxWidth))
+                    $('<td>').text(response.responseJSON.maxWidth))
                     .appendTo('#t02');
             $('<tr>').append(
                     $('<td>').text("Maximum Depth"),
-                    $('<td>').text(response.maxDepth))
+                    $('<td>').text(response.responseJSON.maxDepth))
                     .appendTo('#t02');
             $('<tr>').append(
                     $('<td>').text("Maximum Height"),
-                    $('<td>').text(response.maxHeight))
+                    $('<td>').text(response.responseJSON.maxHeight))
                     .appendTo('#t02');
             $('<tr>').append(
                     $('<td>').text("Build Area Shape"),
-                    $('<td>').text(response.buildAreaShape))
+                    $('<td>').text(response.responseJSON.buildAreaShape))
                     .appendTo('#t02');
             $('<tr>').append(
                     $('<td>').text("Connection Type"),
-                    $('<td>').text(response.connectionType))
+                    $('<td>').text(response.responseJSON.connectionType))
                     .appendTo('#t02');
         }
 
@@ -167,11 +178,13 @@
         }
 
         function bindMonitorTable(response) {
-            $('<tr>').append(
-                    $('<td>').text(response.timeStamp),
-                    $('<td>').text(response.bedTemperature),
-                    $('<td>').text(response.nozzleTemperature),
-                    $('<td>').append(response.progress)).replaceWith("tr#valueRow");
+            $('tr#valueRow').replaceWith($('<tr id=\"valueRow\">').append(
+                    $('<td>').text(response.responseJSON.timeStamp),
+                    $('<td>').text(response.responseJSON.bedTemperature),
+                    $('<td>').text(response.responseJSON.nozzleTemperature),
+                    $('<td>').append("<div class=\"container\"><div class=\"progress\"><div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"70\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width:"
+                            + response.responseJSON.progress
+                            + "%\"><span class=\"sr-only\"></span></div></div></div>")));
         }
 
         $(function () {
@@ -237,10 +250,18 @@
             <th>Progress</th>
         </tr>
         <tr id="valueRow">
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
+            <td width="15%">-</td>
+            <td width="15%">-</td>
+            <td width="15%">-</td>
+            <td>
+                <div class="container">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="00" aria-valuemin="0" aria-valuemax="100" style="width:10%">
+                            <span class="sr-only"></span>
+                        </div>
+                    </div>
+                </div>
+            </td>
         </tr>
     </table>
 </div>

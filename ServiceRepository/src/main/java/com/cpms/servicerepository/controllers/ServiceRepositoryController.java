@@ -1,5 +1,6 @@
 package com.cpms.servicerepository.controllers;
 
+import com.cpms.servicerepository.bean.MachineBean;
 import com.cpms.servicerepository.bean.MachineServicesBean;
 import com.cpms.servicerepository.dao.MachineServicesDAO;
 import com.cpms.servicerepository.model.MachineServices;
@@ -54,6 +55,19 @@ public class ServiceRepositoryController {
         }
         response.addHeader("Access-Control-Allow-Origin", "*");
         return beans;
+    }
+
+    @RequestMapping(value = "/machines", method = RequestMethod.GET)
+    public @ResponseBody List<MachineBean> getPublishedMachines(HttpServletResponse response) {
+        List<MachineServices> list = machineServicesDAO.list();
+        List<MachineBean> machineBeans = new ArrayList<>();
+        for (MachineServices machineServices : list) {
+            MachineBean machineBean = new MachineBean(machineServices);
+            machineBeans.add(machineBean);
+            logger.debug("[Machine Id: {} ]", machineServices.getMachine_id());
+        }
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        return machineBeans;
     }
 
     @RequestMapping(value = "/services/{machineId}", method = RequestMethod.GET)

@@ -35,17 +35,22 @@
         }
     </style>
 
+    <link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css"/>">
+    <script src="<c:url value="/resources/js/jquery.min.js"/>"></script>
     <script src="<c:url value="/resources/js/jquery-2.1.4.js"/>"></script>
+    <script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
+
     <script>
         function bindTable(response) {
             $.each(response, function (i, item) {
+                var subscriptionUrl = "${baseUrl}/subscription/" + item.machineId;
                 $('<tr>').append(
                         $('<td>').text(item.machineId),
-                        $('<td>').text(item.machineModel),
-                        $('<td>').text(item.machineDescription),
+                        $('<td>').text(item.model),
+                        $('<td>').text(item.description),
                         $('<td>').append(
-                                $('<a>').attr('href', "<c:url value='/subscribe?userEmail=${userEmail}&machineId=" + item.machineId + "' />")
-                                        .attr('class', "btn btn-success custom-width").text("Subscribe Machine")
+                                $('<a>').attr('href', subscriptionUrl)
+                                        .attr('class', "btn btn-success custom-width").text("Subscribe")
                         )).appendTo('#t01');
             });
         }

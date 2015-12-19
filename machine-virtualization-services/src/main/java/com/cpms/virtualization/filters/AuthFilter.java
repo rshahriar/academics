@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class AuthFilter implements ContainerRequestFilter {
 
-    private static final String authorizationUrl = "http://130.184.104.115:8084/cpms-subscription/validate";
+    private static final String authorizationUrl = "http://130.184.104.151:8084/cpms-subscription/validate";
     // Exception thrown if user is unauthorized.
     private final static WebApplicationException unauthorized =
             new WebApplicationException(
@@ -37,6 +37,11 @@ public class AuthFilter implements ContainerRequestFilter {
             throws WebApplicationException {
 
         if(containerRequest.getMethod().equals("OPTIONS")) {
+            return containerRequest;
+        }
+
+        // FIXME: HackAlert
+        if (containerRequest.getMethod().equals("POST")) {
             return containerRequest;
         }
 

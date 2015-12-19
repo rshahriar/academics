@@ -7,8 +7,9 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class EndPoints {
 
+    private static final String serviceRepositoryBaseUrl = "http://130.184.104.115:8081/ServiceRepository";
+    private static final String virtualizationServiceBaseUrl = "http://130.184.104.115:8082/virtulization";
     private static final String baseUrl = "http://130.184.104.115:8083/cpms-app";
-    private static final String serviceRepositoryBaseUrl = "http://130.184.104.115:8083/ServiceRepository";
     private static final String subscriptionBaseUrl = "http://130.184.104.115:8084/cpms-subscription";
 
     public static String getURLWithContextPath(HttpServletRequest request) {
@@ -27,12 +28,20 @@ public class EndPoints {
         return getUrl("dashboard");
     }
 
-    public static String getSubscriptionUrl() {
-        return getUrl("subscribe");
+    public static String getSubscribableMachineListViewUrl() {
+        return getUrl("subscription/list");
     }
 
-    public static String getMachineListUrl() {
+    public static String getSubscribedMachineListUrl() {
         return getUrl(subscriptionBaseUrl, "machines/subscribed");
+    }
+
+    public static String getMachineSubscriptionUrl() {
+        return getUrl(subscriptionBaseUrl, "machines/subscribe");
+    }
+
+    public static String getPublishedMachineListUrl() {
+        return getUrl(serviceRepositoryBaseUrl, "machines");
     }
 
     public static String getMachineRegistrationUrl() {

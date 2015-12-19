@@ -20,9 +20,9 @@ public class DashboardController {
     public String getDashboardView(ModelMap model) {
         model.addAttribute("loginViewUrl", EndPoints.getLoginUrl());
         model.addAttribute("registerMachineViewUrl", EndPoints.getMachineRegistrationUrl());
-        model.addAttribute("subscriptionViewUrl", EndPoints.getSubscriptionUrl());
+        model.addAttribute("subscribableListViewUrl", EndPoints.getSubscribableMachineListViewUrl());
         model.addAttribute("baseUrl", EndPoints.getBaseUrl());
-        model.addAttribute("machineListUrl", EndPoints.getMachineListUrl());
+        model.addAttribute("machineListUrl", EndPoints.getSubscribedMachineListUrl());
         logger.debug("Loading dashboard.......");
         return VIEW_DASHBOARD;
     }

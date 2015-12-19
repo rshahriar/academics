@@ -6,10 +6,13 @@ import com.cpms.application.subscription.dao.AbstractDAO;
 import com.cpms.application.subscription.model.SubscribedMachine;
 import com.cpms.application.subscription.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -29,11 +32,14 @@ public class MachineSubscriptionController {
         return new UserBean(user);
     }
 
-    @RequestMapping(value = "/subscribe", method = RequestMethod.GET)
-    public @ResponseBody String subscribeMachine(@RequestParam("userEmail") String userEmail,
-                                                 @RequestParam("machineId") int machineId,
-                                                 @RequestParam("remark") String remark,
-                                                 HttpServletResponse response, ModelMap model) {
+    @RequestMapping(value = "/subscribe", method = RequestMethod.POST)
+    public ResponseEntity<String> subscribeMachine(@RequestParam("userEmail") String userEmail,
+                                           @RequestParam("userToken") String userToken,
+                                           @RequestParam("machineId") int machineId,
+                                           @RequestParam("remark") String remark,
+                                           HttpServletResponse response, ModelMap model) {
+        // FIXME: validate token before subscribing machines
+        // validate by TokenHandler
         SubscribedMachineBean machineEntry = new SubscribedMachineBean(userEmail, machineId, remark);
         User user = userDAO.getByEmail(machineEntry.getUserEmail());
         SubscribedMachine machine = new SubscribedMachine();
@@ -43,6 +49,6 @@ public class MachineSubscriptionController {
         user.getSubscribedMachines().add(machine);
         userDAO.save(user);
         response.addHeader("Access-Control-Allow-Origin", "*");
-        return "Success";
+        return new ResponseEntity<String>("Success", HttpStatus.OK);
     }
 }
