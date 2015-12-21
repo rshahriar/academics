@@ -196,75 +196,77 @@
 </head>
 <body>
 
-<h3>Machine Id: ${machineId}</h3>
-<h3>Machine Model: ${machineModel}</h3>
+<div class="container">
 
-<br/>
+    <h3>Machine Id: ${machineId}</h3>
+    <h3>Machine Model: ${machineModel}</h3>
 
-<div>
+    <br/>
+
+    <div>
+        <br />
+        <table id="t02">
+            <tr>
+                <th width="50%">Characteristics</th>
+                <th width="50%">Data</th>
+            </tr>
+        </table>
+    </div>
+    <br/>
+
+    <div>
+        <table>
+            <tr>
+                <td width="50%">Machine Free Busy Information</td>
+                <td width="50%"><img src="<c:url value="/resources/images/Free.png" />" id="img1"></td>
+            </tr>
+        </table>
+    </div>
+
     <br />
-    <table id="t02">
-        <tr>
-            <th width="50%">Characteristics</th>
-            <th width="50%">Data</th>
-        </tr>
-    </table>
-</div>
-<br/>
 
-<div>
-    <table>
-        <tr>
-            <td width="50%">Machine Free Busy Information</td>
-            <td width="50%"><img src="<c:url value="/resources/images/Free.png" />" id="img1"></td>
-        </tr>
-    </table>
-</div>
+    <div class="container" align="left" style="width: 100%">
+        <form role="form" method="POST" enctype="multipart/form-data" action="${controlServiceUrl}">
+            <%--<fieldset>--%>
+            <legend>Control Panel:</legend>
+            <div class="form-group">
+                <label for="fileInput">Select Model File</label>
+                <input id="fileInput" type="file" name="file">
+            </div>
+            <input type="submit" value="Print" class="btn btn-default">
+            <%--</fieldset>--%>
+        </form>
+    </div>
 
-<br />
+    <%--<div>--%>
+    <%--<button onclick="fetchMonitorData()">Fetch Monitoring Information</button>--%>
+    <%--</div>--%>
 
-<div class="container" align="left" style="width: 100%">
-    <form role="form" method="POST" enctype="multipart/form-data" action="${controlServiceUrl}">
-        <%--<fieldset>--%>
-        <legend>Control Panel:</legend>
-        <div class="form-group">
-            <label for="fileInput">Select Model File</label>
-            <input id="fileInput" type="file" name="file">
-        </div>
-        <input type="submit" value="Print" class="btn btn-default">
-        <%--</fieldset>--%>
-    </form>
-</div>
-
-<%--<div>--%>
-<%--<button onclick="fetchMonitorData()">Fetch Monitoring Information</button>--%>
-<%--</div>--%>
-
-<div>
-    <br />
-    <table id="t01">
-        <tr>
-            <th>Time</th>
-            <th>Bed Temperature</th>
-            <th>Nozzle Temperature</th>
-            <th>Progress</th>
-        </tr>
-        <tr id="valueRow">
-            <td width="15%">-</td>
-            <td width="15%">-</td>
-            <td width="15%">-</td>
-            <td>
-                <div class="container">
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" aria-valuenow="00" aria-valuemin="0" aria-valuemax="100" style="width:10%">
-                            <span class="sr-only"></span>
+    <div>
+        <br />
+        <table id="t01">
+            <tr>
+                <th>Time</th>
+                <th>Bed Temperature</th>
+                <th>Nozzle Temperature</th>
+                <th>Progress</th>
+            </tr>
+            <tr id="valueRow">
+                <td width="15%">-</td>
+                <td width="15%">-</td>
+                <td width="15%">-</td>
+                <td>
+                    <div class="container">
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="00" aria-valuemin="0" aria-valuemax="100" style="width:10%">
+                                <span class="sr-only"></span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </td>
-        </tr>
-    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
 </div>
-
 </body>
 </html>

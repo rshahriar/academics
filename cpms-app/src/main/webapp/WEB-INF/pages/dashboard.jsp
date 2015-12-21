@@ -78,8 +78,8 @@
 
             $.each(response, function (i, item) {
                 $('<tr>').append(
-                        $('<td>').text(item.model),
-                        $('<td>').text(item.description),
+                        $('<td>').text(item.machineModel),
+                        $('<td>').text(item.machineDescription),
                         $('<td>').append(
                                 $('<a>').attr('href', "<c:url value='/admin/update/" + item.machineId + "' />")
                                         .attr('class', "btn btn-success custom-width").text("Update Machine")

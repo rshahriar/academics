@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * Created by Rakib on 11/22/2015.
@@ -50,10 +52,22 @@ public class MonitorController {
 
             model.addAttribute("machineId", jsonMap.get("machineId"));
             model.addAttribute("machineModel", jsonMap.get("machineModel"));
-            model.addAttribute("controlServiceUrl", jsonMap.get("controlServiceUrl"));
-            model.addAttribute("monitorServiceUrl", jsonMap.get("monitorServiceUrl"));
-            model.addAttribute("statusServiceUrl", jsonMap.get("statusServiceUrl"));
-            model.addAttribute("characteristicsServiceUrl", jsonMap.get("characteristicsServiceUrl"));
+            model.addAttribute("machineDescription", jsonMap.get("machineDescription"));
+            model.addAttribute("tags", jsonMap.get("tags"));
+
+            //FIXME: This has to be configurable, here comes the research of protocol and data formats
+            List<LinkedHashMap<String, String>> services = (List<LinkedHashMap<String, String>>) jsonMap.get("serviceBeanList");
+            LinkedHashMap linkedHashMap1 = services.get(0);
+            model.addAttribute("monitorServiceUrl", linkedHashMap1.get("serviceUrl"));
+
+            LinkedHashMap linkedHashMap2 = services.get(1);
+            model.addAttribute("controlServiceUrl", linkedHashMap2.get("serviceUrl"));
+
+            LinkedHashMap linkedHashMap3 = services.get(2);
+            model.addAttribute("statusServiceUrl", linkedHashMap3.get("serviceUrl"));
+
+            LinkedHashMap linkedHashMap4 = services.get(3);
+            model.addAttribute("characteristicsServiceUrl", linkedHashMap4.get("serviceUrl"));
 
             httpClient.getConnectionManager().shutdown();
         } catch (MalformedURLException e) {
