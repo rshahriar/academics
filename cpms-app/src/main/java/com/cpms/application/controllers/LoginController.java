@@ -2,6 +2,7 @@ package com.cpms.application.controllers;
 
 import com.cpms.application.bean.AuthenticatedUserBean;
 import com.cpms.application.bean.BasicAuthentcationBean;
+import com.cpms.application.bean.AppConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -27,6 +29,9 @@ import java.io.IOException;
 @Controller
 @RequestMapping(value = "/login")
 public class LoginController {
+
+    @Autowired
+    private AppConfig appConfig;
 
     private static final String VIEW_LOGIN = "login";
     private static final String VIEW_AUTH = "auth";
@@ -48,7 +53,7 @@ public class LoginController {
         HttpConnectionParams.setConnectionTimeout(client.getParams(), 5000);
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = mapper.writeValueAsString(basicAuthentcationBean);
-        HttpPost post = new HttpPost(EndPoints.getSubscriptionLoginUrl());
+        HttpPost post = new HttpPost(appConfig.getSubscriptionLoginUrl());
         StringEntity entity = new StringEntity(jsonString);
         post.addHeader("Content-Type", "application/json");
         post.setEntity(entity);
@@ -61,7 +66,7 @@ public class LoginController {
         String responseObjectString = EntityUtils.toString(response.getEntity());
         AuthenticatedUserBean authenticatedUserBean = mapper.readValue(responseObjectString, AuthenticatedUserBean.class);
         model.addAttribute("authenticatedUserBean", authenticatedUserBean);
-        model.addAttribute("dashboardViewUrl", EndPoints.getDashboardUrl());
+        model.addAttribute("dashboardViewUrl", appConfig.getDashboardViewUrl());
         return VIEW_AUTH;
     }
 }

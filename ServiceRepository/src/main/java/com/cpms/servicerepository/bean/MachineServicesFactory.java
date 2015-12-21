@@ -1,10 +1,13 @@
+/*
 package com.cpms.servicerepository.bean;
 
 import com.cpms.servicerepository.model.MachineServices;
 
+*/
 /**
  * Created by Rakib on 11/21/2015.
- */
+ *//*
+
 public class MachineServicesFactory {
     public static MachineServicesBean getMachineServicesBean(MachineServices machineServices) {
         return new MachineServicesBean(machineServices);
@@ -22,3 +25,4 @@ public class MachineServicesFactory {
         return machineServices;
     }
 }
+*/

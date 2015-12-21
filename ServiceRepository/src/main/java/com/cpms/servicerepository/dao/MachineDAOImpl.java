@@ -1,6 +1,6 @@
 package com.cpms.servicerepository.dao;
 
-import com.cpms.servicerepository.model.MachineServices;
+import com.cpms.servicerepository.model.Machine;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -8,24 +8,20 @@ import org.hibernate.Transaction;
 import java.util.List;
 
 /**
- * Created by Rakib on 11/21/2015.
+ * Created by Rakib on 12/20/2015.
  */
-public class MachineServicesDAOImpl implements AbstractDAO<MachineServices> {
+public class MachineDAOImpl implements AbstractDAO<Machine> {
 
     private SessionFactory sessionFactory;
 
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
     @Override
-    public void save(MachineServices machineServices) {
+    public void save(Machine machine) {
         Session session = this.sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
-        if (machineServices.getMachine_id() == 0) {
-            session.persist(machineServices);
+        if (machine.getMachine_id() == 0) {
+            session.persist(machine);
         } else {
-            session.saveOrUpdate(machineServices);
+            session.saveOrUpdate(machine);
         }
         tx.commit();
         session.close();
@@ -33,17 +29,17 @@ public class MachineServicesDAOImpl implements AbstractDAO<MachineServices> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<MachineServices> list() {
+    public List<Machine> list() {
         Session session = this.sessionFactory.openSession();
-        List<MachineServices> machineServicesList = session.createQuery("from MachineServices").list();
+        List<Machine> machines = session.createQuery("from Machine").list();
         session.close();
-        return machineServicesList;
+        return machines;
     }
 
     @Override
-    public MachineServices getMachineById(int machine_id) {
+    public Machine getMachineById(int machine_id) {
         Session session = this.sessionFactory.openSession();
-        List<MachineServices> machineServicesList = session.createQuery("from MachineServices m where m.machine_id = :machine_id")
+        List<Machine> machineServicesList = session.createQuery("from Machine m where m.machine_id = :machine_id")
                 .setParameter("machine_id", machine_id)
                 .list();
         session.close();
@@ -52,5 +48,9 @@ public class MachineServicesDAOImpl implements AbstractDAO<MachineServices> {
         } else {
             return null;
         }
+    }
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 }

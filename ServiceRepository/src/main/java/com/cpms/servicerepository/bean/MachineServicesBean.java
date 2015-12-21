@@ -1,6 +1,11 @@
 package com.cpms.servicerepository.bean;
 
+import com.cpms.servicerepository.model.Machine;
 import com.cpms.servicerepository.model.MachineServices;
+import com.cpms.servicerepository.model.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Rakib on 11/21/2015.
@@ -10,33 +15,25 @@ public class MachineServicesBean {
     private int machineId;
     private String machineModel;
     private String machineDescription;
-    private String controlServiceUrl;
-    private String controlServiceDescription;
-    private String monitorServiceUrl;
-    private String monitorServiceDescription;
+    private String tags;
+    private List<ServiceBean> serviceBeanList = new ArrayList<>();
 
-    // FIXME: Change database structure for having  multiple number of services for single machine on single purpose
-    private String statusServiceUrl = "http://130.184.104.115:8082/virtualization/status/ultimaker";
-    private String characteristicsServiceUrl = "http://130.184.104.115:8082/virtualization/characteristics/ultimaker";
-
-    public MachineServicesBean(MachineServices machineServices) {
-        this.machineId = machineServices.getMachine_id();
-        this.machineModel = machineServices.getMachine_model();
-        this.machineDescription = machineServices.getMachine_description();
-        this.controlServiceUrl = machineServices.getControl_service_url();
-        this.controlServiceDescription = machineServices.getControl_service_description();
-        this.monitorServiceUrl = machineServices.getMonitor_service_url();
-        this.monitorServiceDescription = machineServices.getMonitor_service_description();
+    public MachineServicesBean(Machine machine) {
+        this.machineId = machine.getMachine_id();
+        this.machineModel = machine.getMachine_model();
+        this.machineDescription = machine.getMachine_description();
+        this.tags = machine.getTags();
+        for (Service service : machine.getServices()) {
+            ServiceBean bean = new ServiceBean(service);
+            this.serviceBeanList.add(bean);
+        }
     }
 
     public MachineServicesBean() {
         this.machineId = 0;
         this.machineModel = "Test";
         this.machineDescription = "Test";
-        this.controlServiceUrl = "Test";
-        this.controlServiceDescription = "Test";
-        this.monitorServiceUrl = "Test";
-        this.monitorServiceDescription = "Test";
+        this.tags = "Test";
     }
 
     public int getMachineId() {
@@ -63,51 +60,19 @@ public class MachineServicesBean {
         this.machineDescription = machineDescription;
     }
 
-    public String getControlServiceUrl() {
-        return controlServiceUrl;
+    public String getTags() {
+        return tags;
     }
 
-    public void setControlServiceUrl(String controlServiceUrl) {
-        this.controlServiceUrl = controlServiceUrl;
+    public void setTags(String tags) {
+        this.tags = tags;
     }
 
-    public String getControlServiceDescription() {
-        return controlServiceDescription;
+    public List<ServiceBean> getServiceBeanList() {
+        return serviceBeanList;
     }
 
-    public void setControlServiceDescription(String controlServiceDescription) {
-        this.controlServiceDescription = controlServiceDescription;
-    }
-
-    public String getMonitorServiceUrl() {
-        return monitorServiceUrl;
-    }
-
-    public void setMonitorServiceUrl(String monitorServiceUrl) {
-        this.monitorServiceUrl = monitorServiceUrl;
-    }
-
-    public String getMonitorServiceDescription() {
-        return monitorServiceDescription;
-    }
-
-    public void setMonitorServiceDescription(String monitorServiceDescription) {
-        this.monitorServiceDescription = monitorServiceDescription;
-    }
-
-    public String getStatusServiceUrl() {
-        return statusServiceUrl;
-    }
-
-    public void setStatusServiceUrl(String statusServiceUrl) {
-        this.statusServiceUrl = statusServiceUrl;
-    }
-
-    public String getCharacteristicsServiceUrl() {
-        return characteristicsServiceUrl;
-    }
-
-    public void setCharacteristicsServiceUrl(String characteristicsServiceUrl) {
-        this.characteristicsServiceUrl = characteristicsServiceUrl;
+    public void setServiceBeanList(List<ServiceBean> serviceBeanList) {
+        this.serviceBeanList = serviceBeanList;
     }
 }

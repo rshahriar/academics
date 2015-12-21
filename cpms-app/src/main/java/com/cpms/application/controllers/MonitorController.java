@@ -1,18 +1,18 @@
 package com.cpms.application.controllers;
 
+import com.cpms.application.bean.AppConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -25,14 +25,16 @@ import java.util.HashMap;
 @RequestMapping(value = "/monitor")
 public class MonitorController {
 
+    @Autowired
+    private AppConfig appConfig;
+
     private final static org.slf4j.Logger logger = LoggerFactory.getLogger(MonitorController.class);
 
     @RequestMapping(value = "/{machineId}", method = RequestMethod.GET)
     public String getMonitorView(@PathVariable String machineId, ModelMap model) {
-        String url = "http://130.184.104.115:8081/ServiceRepository/services/" + machineId;
         try {
             DefaultHttpClient httpClient = new DefaultHttpClient();
-            HttpGet request = new HttpGet(url);
+            HttpGet request = new HttpGet(appConfig.getPublishedMachineUrl(machineId));
             request.addHeader("accpet", "application/json");
             HttpResponse response = httpClient.execute(request);
             if (response.getStatusLine().getStatusCode() != 200) {

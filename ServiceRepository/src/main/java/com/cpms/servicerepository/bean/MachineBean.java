@@ -1,22 +1,24 @@
 package com.cpms.servicerepository.bean;
 
-import com.cpms.servicerepository.model.MachineServices;
+import com.cpms.servicerepository.model.Machine;
 
 /**
  * Created by Rakib on 12/18/2015.
  */
 public class MachineBean {
     private Integer machineId;
-    private String model;
-    private String description;
+    private String machineModel;
+    private String machineDescription;
+    private String tags;
 
     public MachineBean() {
     }
 
-    public MachineBean(MachineServices machineServices) {
-        this.machineId = machineServices.getMachine_id();
-        this.model = machineServices.getMachine_model();
-        this.description = machineServices.getMachine_description();
+    public MachineBean(Machine machine) {
+        this.machineId = machine.getMachine_id();
+        this.machineModel = machine.getMachine_model();
+        this.machineDescription = machine.getMachine_description();
+        this.tags = machine.getTags();
     }
 
     public Integer getMachineId() {
@@ -27,19 +29,27 @@ public class MachineBean {
         this.machineId = machineId;
     }
 
-    public String getModel() {
-        return model;
+    public String getMachineModel() {
+        return machineModel;
     }
 
-    public void setModel(String model) {
-        this.model = model;
+    public void setMachineModel(String machineModel) {
+        this.machineModel = machineModel;
     }
 
-    public String getDescription() {
-        return description;
+    public String getMachineDescription() {
+        return machineDescription;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setMachineDescription(String machineDescription) {
+        this.machineDescription = machineDescription;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
     }
 }

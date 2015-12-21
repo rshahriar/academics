@@ -1,5 +1,6 @@
 package com.cpms.application.controllers;
 
+import com.cpms.application.bean.AppConfig;
 import com.cpms.application.bean.SubscribedMachineBean;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -7,6 +8,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -23,21 +25,24 @@ import java.net.MalformedURLException;
 @RequestMapping(value = "/subscription")
 public class SubscriptionController {
 
+    @Autowired
+    private AppConfig appConfig;
+
     private final static org.slf4j.Logger logger = LoggerFactory.getLogger(SubscriptionController.class);
 
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String getSubscribableList(ModelMap model) {
-        model.addAttribute("baseUrl", EndPoints.getBaseUrl());
-        model.addAttribute("machineListUrl", EndPoints.getPublishedMachineListUrl());
+        model.addAttribute("baseUrl", appConfig.getBaseUrl());
+        model.addAttribute("machineListUrl", appConfig.getPublishedMachineListUrl());
         return "subscribableList";
     }
 
     @RequestMapping(value = "/{machineId}", method = RequestMethod.GET)
     public String getSubscriptionView(@PathVariable("machineId") Integer machineId, ModelMap model) {
         model.addAttribute("machineId", machineId);
-        model.addAttribute("subscriptionUrl", EndPoints.getMachineSubscriptionUrl());
-        model.addAttribute("subscriptionListViewUrl", EndPoints.getSubscribableMachineListViewUrl());
+        model.addAttribute("subscriptionUrl", appConfig.getMachineSubscriptionUrl());
+        model.addAttribute("subscriptionListViewUrl", appConfig.getSubscribableMachineListViewUrl());
         return "subscribe";
     }
 
@@ -64,7 +69,7 @@ public class SubscriptionController {
             logger.error("Exception occurred for parsing");
         }
         model.addAttribute("message", message);
-        model.addAttribute("dashboard", EndPoints.getURLWithContextPath(request) + "?userEmail=" + subscribedMachineBean.getUserEmail());
+        model.addAttribute("dashboard", appConfig.getURLWithContextPath(request) + "?userEmail=" + subscribedMachineBean.getUserEmail());
         return "subscription_success";
     }
 }

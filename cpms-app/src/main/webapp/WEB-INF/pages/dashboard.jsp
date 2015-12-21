@@ -27,15 +27,28 @@
             color: white;
         }
     </style>
+    <link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css"/>">
 
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="<c:url value="/resources/js/jquery.min.js"/>"></script>
+    <script src="<c:url value="/resources/js/jquery-2.1.4.js"/>"></script>
+    <script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
 
-        <link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css"/>">
-        <script src="<c:url value="/resources/js/jquery.min.js"/>"></script>
-        <script src="<c:url value="/resources/js/jquery-2.1.4.js"/>"></script>
-        <script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
     <script>
-        function bindTable(response) {
+
+        function bindSubscribedMachinesTable(response) {
+            $('#titleH3').text('Accessible Cyber Physical Manufacturing Machines');
+
+            $('#buttonDiv').append(
+                    $('<a>').attr('href', "${subscribableListViewUrl}")
+                            .attr('class', "btn btn-success custom-width").text("Subscribe a machine")
+            );
+
+            $('<tr>').append(
+                    $('<th>').text("Machine Model"),
+                    $('<th>').text("Description"),
+                    $('<th>').text("Monitor"))
+                    .appendTo('#t01');
+
             var list = response.subscribedMachineList;
             $.each(list, function (i, item) {
                 $('<tr>').append(
@@ -44,6 +57,36 @@
                         $('<td>').append(
                                 $('<a>').attr('href', "<c:url value='/monitor/" + item.machineId + "' />")
                                         .attr('class', "btn btn-success custom-width").text("Visit Machine")
+                        )).appendTo('#t01');
+            });
+        }
+
+        function bindPublishedMachinesTable(response) {
+            $('#titleH3').text('Published Cyber Physical Manufacturing Machines');
+
+            $('#buttonDiv').append(
+                    $('<a>').attr('href', "${registerMachineViewUrl}")
+                            .attr('class', "btn btn-success custom-width").text("Register new machine")
+            );
+
+            $('<tr>').append(
+                    $('<th>').text("Machine Model"),
+                    $('<th>').text("Description"),
+                    $('<th>').text("Update"),
+                    $('<th>').text("Monitor"))
+                    .appendTo('#t01');
+
+            $.each(response, function (i, item) {
+                $('<tr>').append(
+                        $('<td>').text(item.model),
+                        $('<td>').text(item.description),
+                        $('<td>').append(
+                                $('<a>').attr('href', "<c:url value='/admin/update/" + item.machineId + "' />")
+                                        .attr('class', "btn btn-success custom-width").text("Update Machine")
+                        ),
+                        $('<td>').append(
+                                $('<a>').attr('href', "<c:url value='/monitor/" + item.machineId + "' />")
+                                        .attr('class', "btn btn-success custom-width").text("Monitor Machine")
                         )).appendTo('#t01');
             });
         }
@@ -86,7 +129,7 @@
 
         function validateToken() {
             var userToken=getCookie("cpmsLoginToken");
-            $.post("http://130.184.104.115:8084/cpms-subscription/validate",
+            $.post("${tokenValidationUrl}",
                     {"token": userToken},
                     function(data, status){
                         alert("Data: " + data + "\nStatus: " + status);
@@ -96,43 +139,36 @@
         $(function () {
             checkAuthToken();
             var userEmail=getCookie("cpmsUserEmail");
-            $.getJSON("${machineListUrl}" + "?email=" + userEmail, function(result){
-                bindTable(result);
-            });
+            var userRole=getCookie("cpmsUserRole");
+            if (userRole == "1") {
+                $.getJSON("${publishedMachineListUrl}", function(result){
+                    bindPublishedMachinesTable(result);
+                });
+            } else {
+                $.getJSON("${machineListUrl}" + "?email=" + userEmail, function(result){
+                    bindSubscribedMachinesTable(result);
+                });
+            }
         });
     </script>
 </head>
 
 <body>
-<br/>
-<div>
-    <%--<button class="btn btn-danger custom-width" style="float: right" onclick="validateToken()">Check Token</button>--%>
-    <button class="btn btn-warning custom-width" style="float: right" onclick="logout()">Logout</button>
+<div class="container">
+    <br/>
+    <div>
+        <%--<button class="btn btn-danger custom-width" style="float: right" onclick="validateToken()">Check Token</button>--%>
+        <button class="btn btn-warning custom-width" style="float: right" onclick="logout()">Logout</button>
+    </div>
+    <br/>
+
+    <div id="buttonDiv">
+    </div>
+
+    <h3 id="titleH3"></h3>
+
+    <table id="t01">
+    </table>
 </div>
-<br/>
-
-<c:choose>
-    <c:when test="${authenticatedUserBean.userRole=='1'}">
-        <div>
-            <a href="${registerMachineViewUrl}" class="btn btn-success custom-width">Manage Machines</a>
-        </div>
-    </c:when>
-    <c:otherwise>
-        <div>
-            <a href="${subscribableListViewUrl}" class="btn btn-success custom-width">Subscribe a machine</a>
-        </div>
-    </c:otherwise>
-</c:choose>
-
-<h3>List of accessible Cyber Physical Manufacturing Machines</h3>
-
-<table id="t01">
-    <tr>
-        <th>ID</th>
-        <th>Machine Model</th>
-        <%--<th>Description</th>--%>
-        <th>Visit Machine</th>
-    </tr>
-</table>
 </body>
 </html>

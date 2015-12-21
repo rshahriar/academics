@@ -45,7 +45,7 @@
             $form.submit(function(){
                 $.post($(this).attr('action'), $(this).serialize(), function(response){
                     // do something here on success
-                    alert("Machine Subscription Response: " + response);
+                    alert("Machine Subscription Successful");
                     window.location.replace("${subscriptionListViewUrl}");
                 });
                 return false;

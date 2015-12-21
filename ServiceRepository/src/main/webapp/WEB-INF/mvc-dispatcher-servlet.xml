@@ -35,7 +35,8 @@
         <property name="dataSource" ref="dataSource" />
         <property name="annotatedClasses">
             <list>
-                <value>com.cpms.servicerepository.model.MachineServices</value>
+                <value>com.cpms.servicerepository.model.Machine</value>
+                <value>com.cpms.servicerepository.model.Service</value>
             </list>
         </property>
         <property name="hibernateProperties">
@@ -47,9 +48,12 @@
         </property>
     </bean>
 
-    <bean id="machineServicesDAO" class="com.cpms.servicerepository.dao.MachineServicesDAOImpl">
+    <!--<bean id="machineServicesDAO" class="com.cpms.servicerepository.dao.MachineServicesDAOImpl">-->
+        <!--<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />-->
+    <!--</bean>-->
+
+    <bean id="machineDAO" class="com.cpms.servicerepository.dao.MachineDAOImpl">
         <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
     </bean>
-
 
 </beans>
