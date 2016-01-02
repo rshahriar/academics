@@ -46,8 +46,8 @@
                 var subscriptionUrl = "${baseUrl}/subscription/" + item.machineId;
                 $('<tr>').append(
                         $('<td>').text(item.machineId),
-                        $('<td>').text(item.model),
-                        $('<td>').text(item.description),
+                        $('<td>').text(item.machineModel),
+                        $('<td>').text(item.machineDescription),
                         $('<td>').append(
                                 $('<a>').attr('href', subscriptionUrl)
                                         .attr('class', "btn btn-success custom-width").text("Subscribe")
@@ -64,16 +64,18 @@
 </head>
 
 <body>
-<h3>List of machines for published for subscription</h3>
 
-<table id="t01">
-    <tr>
-        <th>ID</th>
-        <th>Machine Model</th>
-        <th>Description</th>
-        <th>Visit Machine</th>
-    </tr>
-</table>
+<div class="container">
+    <h3>List of machines for published for subscription</h3>
 
+    <table id="t01">
+        <tr>
+            <th>ID</th>
+            <th>Machine Model</th>
+            <th>Description</th>
+            <th>Visit Machine</th>
+        </tr>
+    </table>
+</div>
 </body>
 </html>

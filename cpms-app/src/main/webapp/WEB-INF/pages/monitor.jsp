@@ -132,58 +132,62 @@
         function bindCharacteristicsTable(response) {
             $('<tr>').append(
                     $('<td>').text("Machine Model Name"),
-                    $('<td>').text(response.responseJSON.machineModelName))
+                    $('<td>').text(response.machineModelName))
                     .appendTo('#t02');
             $('<tr>').append(
                     $('<td>').text("Company"),
-                    $('<td>').text(response.responseJSON.company))
+                    $('<td>').text(response.company))
                     .appendTo('#t02');
             $('<tr>').append(
                     $('<td>').text("Machine Type"),
-                    $('<td>').text(response.responseJSON.machineType))
+                    $('<td>').text(response.machineType))
                     .appendTo('#t02');
             $('<tr>').append(
                     $('<td>').text("Material"),
-                    $('<td>').text(response.responseJSON.material))
+                    $('<td>').text(response.material))
                     .appendTo('#t02');
             $('<tr>').append(
                     $('<td>').text("Maximum Width"),
-                    $('<td>').text(response.responseJSON.maxWidth))
+                    $('<td>').text(response.maxWidth))
                     .appendTo('#t02');
             $('<tr>').append(
                     $('<td>').text("Maximum Depth"),
-                    $('<td>').text(response.responseJSON.maxDepth))
+                    $('<td>').text(response.maxDepth))
                     .appendTo('#t02');
             $('<tr>').append(
                     $('<td>').text("Maximum Height"),
-                    $('<td>').text(response.responseJSON.maxHeight))
+                    $('<td>').text(response.maxHeight))
                     .appendTo('#t02');
             $('<tr>').append(
                     $('<td>').text("Build Area Shape"),
-                    $('<td>').text(response.responseJSON.buildAreaShape))
+                    $('<td>').text(response.buildAreaShape))
                     .appendTo('#t02');
             $('<tr>').append(
                     $('<td>').text("Connection Type"),
-                    $('<td>').text(response.responseJSON.connectionType))
+                    $('<td>').text(response.connectionType))
                     .appendTo('#t02');
         }
 
         function bindStatusImage(response) {
             var status = response;
+            $('#freeBusy').text(status);
+/*
             if (status == 'Available') {
-                $('img1').attr('src', '<c:url value="/resources/images/Free.png" />');
+                $('#freeBusy').text(status);
+                <%--$('img1').attr('src', '<c:url value="/resources/images/Free.png" />');--%>
             } else {
                 $('img1').attr('src', '<c:url value="/resources/images/Busy.png" />');
             }
+*/
         }
 
         function bindMonitorTable(response) {
             $('tr#valueRow').replaceWith($('<tr id=\"valueRow\">').append(
-                    $('<td>').text(response.responseJSON.timeStamp),
-                    $('<td>').text(response.responseJSON.bedTemperature),
-                    $('<td>').text(response.responseJSON.nozzleTemperature),
+                    $('<td>').text(response.timeStamp),
+                    $('<td>').text(response.bedTemperature),
+                    $('<td>').text(response.nozzleTemperature),
                     $('<td>').append("<div class=\"container\"><div class=\"progress\"><div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"70\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width:"
-                            + response.responseJSON.progress
+                            + response.progress
                             + "%\"><span class=\"sr-only\"></span></div></div></div>")));
         }
 
@@ -218,7 +222,8 @@
         <table>
             <tr>
                 <td width="50%">Machine Free Busy Information</td>
-                <td width="50%"><img src="<c:url value="/resources/images/Free.png" />" id="img1"></td>
+                <td id="freeBusy" width="50%">Available</td>
+                <%--<img src="<c:url value="/resources/images/Free.png" />" id="img1">--%>
             </tr>
         </table>
     </div>

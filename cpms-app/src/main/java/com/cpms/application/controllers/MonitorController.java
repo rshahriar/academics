@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.media.j3d.Link;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.util.HashMap;
@@ -57,18 +58,18 @@ public class MonitorController {
 
             //FIXME: This has to be configurable, here comes the research of protocol and data formats
             List<LinkedHashMap<String, String>> services = (List<LinkedHashMap<String, String>>) jsonMap.get("serviceBeanList");
-            LinkedHashMap linkedHashMap1 = services.get(0);
-            model.addAttribute("monitorServiceUrl", linkedHashMap1.get("serviceUrl"));
 
-            LinkedHashMap linkedHashMap2 = services.get(1);
-            model.addAttribute("controlServiceUrl", linkedHashMap2.get("serviceUrl"));
-
-            LinkedHashMap linkedHashMap3 = services.get(2);
-            model.addAttribute("statusServiceUrl", linkedHashMap3.get("serviceUrl"));
-
-            LinkedHashMap linkedHashMap4 = services.get(3);
-            model.addAttribute("characteristicsServiceUrl", linkedHashMap4.get("serviceUrl"));
-
+            for (LinkedHashMap<String, String> service : services) {
+                if (service.get("serviceName").equals("Control Service - Print")) {
+                    model.addAttribute("controlServiceUrl", service.get("serviceUrl"));
+                } else if (service.get("serviceName").equals("Monitor - All")) {
+                    model.addAttribute("monitorServiceUrl", service.get("serviceUrl"));
+                } else if (service.get("serviceName").equals("Monitor - Status")) {
+                    model.addAttribute("statusServiceUrl", service.get("serviceUrl"));
+                } else if (service.get("serviceName").equals("Characteristics")) {
+                    model.addAttribute("characteristicsServiceUrl", service.get("serviceUrl"));
+                }
+            }
             httpClient.getConnectionManager().shutdown();
         } catch (MalformedURLException e) {
             logger.error("BAD URL");

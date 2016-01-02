@@ -37,41 +37,43 @@
     </style>
 </head>
 <body>
-<div style="width : 50%; float: left;">
-    <p><b>List of Services</b></p>
-</div>
-<div style="float: right">
-    <p>
-        <form:form action="register" method="get" commandName="model">
-        <input class="btn btn-default" type="submit" value="Add New Service">
-        </form:form>
-</div>
+<div class="container">
+    <div style="width : 50%; float: left;">
+        <p><b>List of Services</b></p>
+    </div>
+    <div style="float: right">
+        <p>
+            <form:form action="register" method="get" commandName="model">
+            <input class="btn btn-default" type="submit" value="Add New Service">
+            </form:form>
+    </div>
 
-<table id="t01">
-    <tr>
-        <th>ID</th>
-        <th>Machine Model</th>
-        <th>Description</th>
-        <th>Control URL</th>
-        <th>URL Specification</th>
-        <th>Monitor URL</th>
-        <th>URL Specification</th>
-        <th>Edit</th>
-    </tr>
-    <c:forEach var="machineServices" items="${machineServicesList}" varStatus="status">
+    <table id="t01">
         <tr>
-            <td>${machineServices.machineId}</td>
-            <td>${machineServices.machineModel}</td>
-            <td>${machineServices.machineDescription}</td>
-            <td>${machineServices.controlServiceUrl}</td>
-            <td>${machineServices.controlServiceDescription}</td>
-            <td>${machineServices.monitorServiceUrl}</td>
-            <td>${machineServices.monitorServiceDescription}</td>
-            <td>
-                <a href="<c:url value='/edit/${machineServices.machineId}' />" class="btn btn-success custom-width">Edit</a>
-            </td>
+            <th>ID</th>
+            <th>Machine Model</th>
+            <th>Description</th>
+            <th>Control URL</th>
+            <th>URL Specification</th>
+            <th>Monitor URL</th>
+            <th>URL Specification</th>
+            <th>Edit</th>
         </tr>
-    </c:forEach>
-</table>
+        <c:forEach var="machineServices" items="${machineServicesList}" varStatus="status">
+            <tr>
+                <td>${machineServices.machineId}</td>
+                <td>${machineServices.machineModel}</td>
+                <td>${machineServices.machineDescription}</td>
+                <td>${machineServices.controlServiceUrl}</td>
+                <td>${machineServices.controlServiceDescription}</td>
+                <td>${machineServices.monitorServiceUrl}</td>
+                <td>${machineServices.monitorServiceDescription}</td>
+                <td>
+                    <a href="<c:url value='/edit/${machineServices.machineId}' />" class="btn btn-success custom-width">Edit</a>
+                </td>
+            </tr>
+        </c:forEach>
+    </table>
+</div>
 </body>
 </html>
